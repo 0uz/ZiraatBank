@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="750.0" style="-fx-border-color: #e10514;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ziraatbank.MainScreenController">
+   <top>
+      <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="600.0" style="-fx-background-color: #e10514;" BorderPane.alignment="CENTER">
+         <children>
+            <Label prefHeight="22.0" prefWidth="669.0" text="Ziraat Bank App" textFill="WHITE">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets bottom="1.0" left="5.0" />
+               </HBox.margin>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+            <Button fx:id="minimizeButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#minimizeButtonAction" prefHeight="25.0" prefWidth="25.0" text="_" textAlignment="CENTER">
+               <HBox.margin>
+                  <Insets bottom="1.0" left="5.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="exitButton" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#exitButtonAction" prefHeight="25.0" prefWidth="25.0" text="X">
+               <HBox.margin>
+                  <Insets bottom="1.0" left="5.0" right="10.0" />
+               </HBox.margin>
+            </Button>
+         </children></HBox>
+   </top>
+   <center>
+      <Pane prefHeight="420.0" prefWidth="413.0" BorderPane.alignment="CENTER">
+         <children>
+            <ComboBox fx:id="iller" layoutX="24.0" layoutY="48.0" prefWidth="150.0" promptText="Seçiniz" />
+            <Label layoutX="24.0" layoutY="24.0" prefHeight="17.0" prefWidth="150.0" text="İller">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <Label layoutX="24.0" layoutY="96.0" prefHeight="17.0" prefWidth="150.0" text="Subnet IP">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <Label layoutX="196.0" layoutY="24.0" prefHeight="17.0" prefWidth="150.0" text="Subnet Mask">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="subnetBroadcastText" layoutX="196.0" layoutY="96.0" prefHeight="17.0" prefWidth="150.0" text="Subnet Broadcast">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="routerIPText" layoutX="24.0" layoutY="273.0" prefHeight="17.0" prefWidth="150.0" text="Router IP">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <Label layoutX="196.0" layoutY="274.0" prefHeight="17.0" prefWidth="150.0" text="ATM IP">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <Label layoutX="23.0" layoutY="152.0" prefHeight="17.0" prefWidth="150.0" text="ADSL Tunnel">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <Label layoutX="196.0" layoutY="153.0" prefHeight="17.0" prefWidth="150.0" text="3G Tunnel">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <ComboBox fx:id="subnetMaskComboBox" disable="true" layoutX="196.0" layoutY="48.0" prefWidth="150.0" promptText="Seçiniz" />
+            <Label fx:id="subnetBroadcast" layoutX="196.0" layoutY="120.0" prefHeight="17.0" prefWidth="150.0">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="router" contentDisplay="CENTER" layoutX="24.0" layoutY="295.0" prefHeight="17.0" prefWidth="150.0">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="ATM" layoutX="196.0" layoutY="295.0" prefHeight="17.0" prefWidth="150.0">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <Label layoutX="196.0" layoutY="215.0" prefHeight="17.0" prefWidth="150.0" text="DVR Mask">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <Label layoutX="24.0" layoutY="216.0" prefHeight="17.0" prefWidth="150.0" text="DVR Gateway">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="DVRMask" layoutX="196.0" layoutY="239.0" prefHeight="17.0" prefWidth="150.0">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="DVRGateway" layoutX="25.0" layoutY="240.0" prefHeight="17.0" prefWidth="150.0">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="ADSLTunnel" layoutX="23.0" layoutY="176.0" prefHeight="17.0" prefWidth="150.0">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="TGTunnel" layoutX="196.0" layoutY="177.0" prefHeight="17.0" prefWidth="150.0">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="subnetIPLabel" layoutX="24.0" layoutY="119.0" prefHeight="17.0" prefWidth="150.0">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <Button fx:id="pingAtButton" disable="true" layoutX="196.0" layoutY="335.0" mnemonicParsing="false" onAction="#pingButtonAction" prefHeight="25.0" prefWidth="72.0" text="Ping At" />
+            <ComboBox fx:id="sendPingComboBox" disable="true" layoutX="24.0" layoutY="335.0" prefHeight="25.0" prefWidth="150.0" promptText="Seçiniz" />
+            <Label fx:id="warningLabel1" alignment="CENTER" layoutX="41.0" layoutY="373.0" prefHeight="21.0" prefWidth="254.0" textOverrun="CLIP" />
+         </children>
+      </Pane>
+   </center>
+   <right>
+      <VBox prefHeight="415.0" prefWidth="360.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane nodeOrientation="LEFT_TO_RIGHT" prefHeight="212.0" prefWidth="375.0" style="-fx-border-color: #e10415; -fx-border-width: 0 0 0 1;">
+               <children>
+                  <TextField fx:id="atmNameTextField" layoutX="16.0" layoutY="47.0" prefWidth="150.0" promptText="En az 2 hane" />
+                  <Label layoutX="16.0" layoutY="24.0" prefHeight="17.0" prefWidth="150.0" text="ATM Adı">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="ATMIDTextField" layoutX="184.0" layoutY="46.0" prefWidth="150.0" promptText="4-6 haneli sayı" />
+                  <Label layoutX="184.0" layoutY="24.0" prefHeight="17.0" prefWidth="150.0" text="ATM ID">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="subeNumTextField" layoutX="16.0" layoutY="109.0" prefWidth="150.0" promptText="1-5 haneli sayı" />
+                  <Label layoutX="16.0" layoutY="89.0" prefHeight="17.0" prefWidth="150.0" text="Şube Numarası">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Button fx:id="kaydetButton" disable="true" layoutX="135.0" layoutY="149.0" mnemonicParsing="false" onAction="#kaydetButtonAction" prefHeight="25.0" prefWidth="80.0" text="Kaydet" />
+                  <TextField fx:id="terminalNoTextField" layoutX="184.0" layoutY="109.0" prefWidth="150.0" promptText="4-6 haneli sayı" />
+                  <Label layoutX="184.0" layoutY="86.0" prefHeight="17.0" prefWidth="150.0" text="Terminal No">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="warningLabel" alignment="CENTER" layoutX="21.0" layoutY="174.0" prefHeight="21.0" prefWidth="308.0" textAlignment="CENTER" textOverrun="CLIP" />
+               </children>
+            </Pane>
+            <Pane prefHeight="209.0" prefWidth="372.0" style="-fx-border-color: #e10514; -fx-border-width: 1 0 0 1;">
+               <children>
+                  <ComboBox fx:id="araSecComboBox" layoutX="16.0" layoutY="26.0" prefWidth="150.0" promptText="Seçiniz" />
+                  <ComboBox fx:id="araSonucComboBox" disable="true" layoutX="184.0" layoutY="26.0" prefWidth="150.0" promptText="Seçiniz" />
+                  <Button fx:id="araButton" disable="true" layoutX="135.0" layoutY="61.0" mnemonicParsing="false" onAction="#araButtonAction" prefHeight="25.0" prefWidth="80.0" text="Ara" />
+                  <ImageView fx:id="ZBimageView" fitHeight="80.0" fitWidth="310.0" layoutX="29.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true" smooth="false" />
+                  <Label layoutX="143.0" layoutY="6.0" text="Bul/Düzenle" />
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+   </right>
+</BorderPane>
