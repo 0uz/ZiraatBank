@@ -101,7 +101,7 @@ public class MainScreenController {
         Image image = new Image(file.toURI().toString());
         ZBimageView.setImage(image);
         ZBimageView.setPreserveRatio(true);
-        
+
 
         araSecComboBox.getItems().add("ATM ID");
         araSecComboBox.getItems().add("ATM Adı");

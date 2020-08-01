@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class DatabaseConnection {
     Connection connection=null;
-    String url="jdbc:sqlite:./src/database/database.db";
+    String url="jdbc:sqlite:./database.db";
     public Connection connect(){
         try {
             connection = DriverManager.getConnection(url);
