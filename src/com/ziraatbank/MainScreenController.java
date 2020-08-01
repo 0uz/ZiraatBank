@@ -102,6 +102,7 @@ public class MainScreenController {
         ZBimageView.setImage(image);
         ZBimageView.setPreserveRatio(true);
 
+       // getExcel();
 
         araSecComboBox.getItems().add("ATM ID");
         araSecComboBox.getItems().add("ATM Adı");
@@ -141,6 +142,9 @@ public class MainScreenController {
             }
             if (t1.equals("ADSL Tunnel")){
                 result=connection.getAra("ADSLTunnel");
+            }
+            if (t1.equals("Terminal No")){
+                result=connection.getAra("TerminalNo");
             }
             araSonucComboBox.getItems().clear();
             for(String s1 : result){
@@ -292,7 +296,7 @@ public class MainScreenController {
 
             controller.setSearch(araSecComboBox.getSelectionModel().getSelectedItem(), araSonucComboBox.getSelectionModel().getSelectedItem());
             setSearch(araSecComboBox.getSelectionModel().getSelectedItem(), araSonucComboBox.getSelectionModel().getSelectedItem());
-            controller.setInfos(search, key);
+            controller.setInfosToFields(search, key);
 
             Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             window.setScene(updateScreenScene);
@@ -423,7 +427,8 @@ public class MainScreenController {
                             ADSLTunnelIP,
                             TGTunnelIP,
                             DVRMaskIP,
-                            DVRGatewayIP);
+                            DVRGatewayIP,
+                            terminalNoTextField.getText());
                     if (checkConn){
                         alert1.setTitle("Başarılı!");
                         alert1.setContentText("Başarılı bir şekilde kaydedildi!");
@@ -612,8 +617,13 @@ public class MainScreenController {
 
     void reset(){
         atmNameTextField.setText("");
+        atmNameTextField.setStyle("-fx-border-color: transparent");
         subeNumTextField.setText("");
+        subeNumTextField.setStyle("-fx-border-color: transparent");
         ATMIDTextField.setText("");
+        ATMIDTextField.setStyle("-fx-border-color: transparent");
+        terminalNoTextField.setText("");
+        terminalNoTextField.setStyle("-fx-border-color: transparent");
         subnetIPLabel.setText("");
         subnetBroadcast.setText("");
         router.setText("");
@@ -622,7 +632,7 @@ public class MainScreenController {
         TGTunnel.setText("");
         DVRGateway.setText("");
         DVRMask.setText("");
-        terminalNoTextField.setText("");
+
 
     }
 
@@ -649,6 +659,9 @@ public class MainScreenController {
         }
         if (search.equals("ADSL Tunnel")){
             this.search="ADSLTunnel";
+        }
+        if (search.equals("Terminal No")){
+            this.search="TerminalNo";
         }
         this.key=key;
     }

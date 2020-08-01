@@ -25,6 +25,7 @@ public class UpdateScreenController {
     public TextField subnetIPTextField;
     public TextField adslTunnelTextField;
     public TextField dvrGatewayTextField;
+    public TextField terminalNoTextField;
     public Label subnetBroadcastIP;
     public Label atmIP;
     public Label TGTunnelIP;
@@ -191,6 +192,24 @@ public class UpdateScreenController {
             }
         });
 
+        terminalNoTextField.textProperty().addListener((observableValue, s, newValue) -> {
+            String value = newValue;
+            if (newValue.length()>2){
+                if(value.charAt(0)=='Z')
+                    value=value.substring(1);
+            }
+
+            if (MainScreenController.integerValid(value,4,6)){
+                terminalNoTextField.setText("Z"+value);
+                terminalNoTextField.setStyle("-fx-border-color: transparent");
+                kaydetButton.setDisable(false);
+            }else{
+                terminalNoTextField.setStyle("-fx-border-color: red");
+                kaydetButton.setDisable(true);
+            }
+
+        });
+
 
 
 
@@ -219,7 +238,7 @@ public class UpdateScreenController {
         stage.setIconified(true);
     }
 
-    public void setInfos(String searchName,String key){
+    public void setInfosToFields(String searchName, String key){
         ArrayList<String> list = connection.getInfos(searchName,key);
         atmAdıTextField.setText(list.get(0));
         atmIDTextField.setText(list.get(1));
@@ -231,12 +250,12 @@ public class UpdateScreenController {
         adslTunnelTextField.setText(list.get(7));
         TGTunnelIP.setText(list.get(8));
         dvrGatewayTextField.setText(list.get(9));
-        dvrMaskIP.setText(list.get(10));
         if (list.get(11).equals(subnet248)){
             subnetMaskComboBox.getSelectionModel().select(subnet248);
         }else{
             subnetMaskComboBox.getSelectionModel().select(subnet252);
         }
+        terminalNoTextField.setText(list.get(12));
 
     }
 
@@ -270,8 +289,8 @@ public class UpdateScreenController {
             connection.updateInfos(search,key,atmAdıTextField.getText(),atmIDTextField.getText()
             ,subeNumTextField.getText(), subnetIPTextField.getText(),routerIP.getText(),
                     subnetBroadcastIP.getText(),atmIP.getText(),adslTunnelTextField.getText(),
-                    TGTunnelIP.getText(),dvrGatewayTextField.getText());
-
+                    TGTunnelIP.getText(),dvrGatewayTextField.getText(),terminalNoTextField.getText());
+            System.out.println(terminalNoTextField.getText());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
             alert.setContentText("Başarıyla kaydedildi!");
@@ -296,6 +315,9 @@ public class UpdateScreenController {
         }
         if (search.equals("ADSL Tunnel")){
             this.search="ADSLTunnel";
+        }
+        if (search.equals("Terminal No")){
+            this.search="TerminalNo";
         }
         this.key=key;
     }

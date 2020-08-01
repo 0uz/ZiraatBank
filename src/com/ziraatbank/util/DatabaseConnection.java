@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class DatabaseConnection {
     Connection connection=null;
     String url="jdbc:sqlite:./database.db";
+
     public Connection connect(){
         try {
             connection = DriverManager.getConnection(url);
@@ -42,7 +43,8 @@ public class DatabaseConnection {
                 "ADSLTunnel varchar(15)," +
                 "TGTunnel varchar(15)," +
                 "DVRMask varchar(15)," +
-                "DVRGateway varchar(15));";
+                "DVRGateway varchar(15)," +
+                "TerminalNo varchar(7));";
 
         String sql2 = "CREATE TABLE IF NOT EXISTS IPBlock (" +
                 "Sehir varchar," +
@@ -87,9 +89,9 @@ public class DatabaseConnection {
     }
 
     public boolean setInfos(String Sehir,String atmAdı, String subeNum, String atmID, String subnetMask, String subnetIP, String subnetBroadcast,
-                            String routerIP, String atmIP, String ADSLTunnel, String TGTunnel, String DVRMask, String DVRGateway){
+                            String routerIP, String atmIP, String ADSLTunnel, String TGTunnel, String DVRMask, String DVRGateway, String terminalNo){
             String sql ="insert into database (Sehir, AtmAdı, SubeNum, AtmID, SubnetMask, " +
-                        "SubnetIP, SubnetBroadcast, RouterIP, AtmIP, ADSLTunnel, TGTunnel, DVRMask, DVRGateway) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                        "SubnetIP, SubnetBroadcast, RouterIP, AtmIP, ADSLTunnel, TGTunnel, DVRMask, TerminalNo) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
                     try (Connection connection=this.connect();
                     PreparedStatement pst = connection.prepareStatement(sql)){
                         pst.setString(1,Sehir);
@@ -104,7 +106,7 @@ public class DatabaseConnection {
                         pst.setString(10,ADSLTunnel);
                         pst.setString(11,TGTunnel);
                         pst.setString(12,DVRMask);
-                        pst.setString(13,DVRGateway);
+                        pst.setString(13,terminalNo);
                         pst.executeUpdate();
                         return true;
                     }catch(SQLException e){
@@ -192,7 +194,7 @@ public class DatabaseConnection {
     public ArrayList<String> getInfos(String searchName, String key){
         String sql ="select AtmAdı,AtmID,SubeNum,SubnetIP,RouterIP," +
                 "SubnetBroadcast,AtmIP,ADSLTunnel,TGTunnel,DVRGateway," +
-                "DVRMask, SubnetMask from database where "+searchName+"='"+key+"'";
+                "DVRMask, SubnetMask, TerminalNo from database where "+searchName+"='"+key+"'";
         try (Connection connection=this.connect();
              Statement pst = connection.createStatement();
              ResultSet rs = pst.executeQuery(sql)){
@@ -210,6 +212,7 @@ public class DatabaseConnection {
                 result.add(rs.getString("DVRGateway"));
                 result.add(rs.getString("DVRMask"));
                 result.add(rs.getString("SubnetMask"));
+                result.add(rs.getString("TerminalNo"));
             }
             return result;
         }catch(SQLException e){
@@ -243,7 +246,7 @@ public class DatabaseConnection {
                             String subeNum, String subnetIP, String routerIP,
                             String subnetBroadcastIp, String atmIP,
                             String adslTunelIP, String TGTunnelI,
-                            String DVRGateway){
+                            String DVRGateway , String terminalNo){
 
         String sql = "update database set " +
                 "AtmAdı = ? ," +
@@ -255,7 +258,8 @@ public class DatabaseConnection {
                 "AtmIP = ?," +
                 "ADSLTunnel = ? ," +
                 "TGTunnel = ? ," +
-                "DVRGateway = ? " +
+                "DVRGateway = ? ," +
+                "TerminalNo = ? " +
                 "where "+search+"= ?;";
 
         try (Connection conn = this.connect();
@@ -270,7 +274,8 @@ public class DatabaseConnection {
             pstmt.setString(8,adslTunelIP);
             pstmt.setString(9,TGTunnelI);
             pstmt.setString(10,DVRGateway);
-            pstmt.setString(11,key);
+            pstmt.setString(11,terminalNo);
+            pstmt.setString(12,key);
 
             pstmt.executeUpdate();
             return true;
