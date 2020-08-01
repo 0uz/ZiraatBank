@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Cell;
@@ -41,11 +42,12 @@ public class MainScreenController {
     public Label warningLabel;
     public Label warningLabel1;
     public Button kaydetButton;
-    public Button hesaplaButton;
     public Button minimizeButton;
     public Button exitButton;
     public Button araButton;
     public Button pingAtButton;
+    public Button ipBlockButton;
+    public Button databaseAktarButton;
     public TextField ATMIDTextField;
     public TextField atmNameTextField;
     public TextField subeNumTextField;
@@ -56,6 +58,7 @@ public class MainScreenController {
     public ComboBox<String> araSonucComboBox;
     public ComboBox<String> sendPingComboBox;
     public ImageView ZBimageView;
+    public FileChooser fileChooser;
 
     private final String subnet252 = "255.255.255.252";
     private final String subnet248 = "255.255.255.248";
@@ -71,6 +74,9 @@ public class MainScreenController {
     private String selectedSubmask = "";
     private String search="";
     private String key="";
+
+    File IPBLockFile;
+    File DatabaseFile;
 
     public void setATMName(boolean ATMName) {
         this.ATMName = ATMName;
@@ -102,7 +108,7 @@ public class MainScreenController {
         ZBimageView.setImage(image);
         ZBimageView.setPreserveRatio(true);
 
-       // getExcel();
+
 
         araSecComboBox.getItems().add("ATM ID");
         araSecComboBox.getItems().add("ATM Adı");
@@ -112,15 +118,17 @@ public class MainScreenController {
         araSecComboBox.getItems().add("Terminal No");
 
         sendPingComboBox.getItems().addAll("Router IP","DVR Gateway","ATM IP","ADSL Tunnel","3G Tunnel","Subnet IP","Subnet Broadcast");
-        for (String s : connection.getSehir()) {
-            iller.getItems().add(s);
-        }
+        illerDoldur();
 
         new AutoCompleteComboBoxListener<>(iller);
         new AutoCompleteComboBoxListener<>(araSonucComboBox);
         subnetMaskComboBox.getItems().add(subnet248);
         subnetMaskComboBox.getItems().add(subnet252);
 
+
+        if (iller.getItems().isEmpty()) {
+            ipBlockButton.setDisable(false);
+        }
 
         araSecComboBox.valueProperty().addListener((observableValue, s, t1) -> {
             ArrayList<String> result= new ArrayList();
@@ -236,6 +244,13 @@ public class MainScreenController {
 
 
 
+
+    }
+
+    void illerDoldur(){
+        for (String s : connection.getSehir()) {
+            iller.getItems().add(s);
+        }
     }
 
     void disableKaydetButton(){
@@ -248,10 +263,26 @@ public class MainScreenController {
             warningLabel.setVisible(false);
         }
     }
+
+    @FXML
+    void ipBlockAktarButton(){
+        fileChooser = new FileChooser();
+        fileChooser.setTitle("IP Block Seçiniz!");
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("EXCEL File (*.XLSX)","*.XLSX");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+        IPBLockFile = fileChooser.showOpenDialog(null);
+        getExcel();
+        illerDoldur();
+    }
+
+    @FXML
+    void databaseAktarButton(){
+
+    }
     @FXML
     void getExcel() {
         try {
-            FileInputStream file = new FileInputStream(new File("C:\\Users\\Seda\\Desktop\\ZiraatBankApp\\resources\\İP.XLSX"));
+            FileInputStream file = new FileInputStream(IPBLockFile);
             XSSFWorkbook workbook = new XSSFWorkbook(file);
             XSSFSheet sheet = workbook.getSheetAt(0);
             for (int rowIndex = 0; rowIndex<=sheet.getLastRowNum();rowIndex++){

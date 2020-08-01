@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="750.0" style="-fx-border-color: #e10514;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ziraatbank.MainScreenController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="750.0" style="-fx-border-color: #e10514;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ziraatbank.MainScreenController">
    <top>
       <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="600.0" style="-fx-background-color: #e10514;" BorderPane.alignment="CENTER">
          <children>
@@ -136,6 +130,8 @@
             <Button fx:id="pingAtButton" disable="true" layoutX="196.0" layoutY="335.0" mnemonicParsing="false" onAction="#pingButtonAction" prefHeight="25.0" prefWidth="72.0" text="Ping At" />
             <ComboBox fx:id="sendPingComboBox" disable="true" layoutX="24.0" layoutY="335.0" prefHeight="25.0" prefWidth="150.0" promptText="Seçiniz" />
             <Label fx:id="warningLabel1" alignment="CENTER" layoutX="41.0" layoutY="373.0" prefHeight="21.0" prefWidth="254.0" textOverrun="CLIP" />
+            <Button fx:id="ipBlockButton" disable="true" layoutX="25.0" layoutY="371.0" mnemonicParsing="false" onAction="#ipBlockAktarButton" text="IP Block Seç" />
+            <Button fx:id="databaseAktarButton" layoutX="116.0" layoutY="371.0" mnemonicParsing="false" onAction="#databaseAktarButton" text="Database Aktar" />
          </children>
       </Pane>
    </center>
