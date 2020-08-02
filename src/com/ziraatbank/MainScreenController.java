@@ -13,10 +13,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.poi.ss.SpreadsheetVersion;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.AreaReference;
+import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.xssf.usermodel.*;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTable;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTableColumn;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTableColumns;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTableStyleInfo;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -40,7 +47,6 @@ public class MainScreenController {
     public Label router;
     public Label ATM;
     public Label warningLabel;
-    public Label warningLabel1;
     public Button kaydetButton;
     public Button minimizeButton;
     public Button exitButton;
@@ -268,9 +274,9 @@ public class MainScreenController {
         fileChooser.setTitle("IP Block Seçiniz!");
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("EXCEL File (*.XLSX)","*.XLSX");
         fileChooser.getExtensionFilters().add(extensionFilter);
-        File IPBLockFile = fileChooser.showOpenDialog(null);
-        if (IPBLockFile!=null) {
-            getExcel(IPBLockFile);
+        File IPBlockFile = fileChooser.showOpenDialog(null);
+        if (IPBlockFile!=null) {
+            getExcel(IPBlockFile);
             illerDoldur();
         }
     }
@@ -311,34 +317,69 @@ public class MainScreenController {
     }
 
     void setExcel(String URL){
-        XSSFWorkbook workbook = new XSSFWorkbook();
-
-        XSSFSheet sheet = workbook.createSheet("Çıktı");
-
         Set<Integer> keySet = connection.exportExcelFile().keySet();
         Map<Integer, Object[]> map = connection.exportExcelFile();
-        int rowNum=0;
-        for (Integer key : keySet){
-            Row row = sheet.createRow(rowNum++);
-            Object[] objArr = map.get(key);
-            int cellNum = 0;
-            for (Object obj : objArr){
-                Cell cell = row.createCell(cellNum++);
-                cell.setCellValue((String)obj);
+
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Tablo");
+
+        XSSFTable table = sheet.createTable();
+        CTTable cttable = table.getCTTable();
+
+        cttable.setDisplayName("Tablo");
+        cttable.setId(1);
+        cttable.setName("Tablo");
+        cttable.setRef("A1:N"+keySet.size());
+        cttable.setTotalsRowShown(true);
+
+        CTTableStyleInfo styleInfo = cttable.addNewTableStyleInfo();
+        styleInfo.setName("TableStyleMedium10");
+        styleInfo.setShowColumnStripes(false);
+        styleInfo.setShowRowStripes(true);
+
+        CTTableColumns columns = cttable.addNewTableColumns();
+        columns.setCount(14);
+        for (int i = 1; i <= 14; i++) {
+            CTTableColumn column = columns.addNewTableColumn();
+            column.setId(i);
+            column.setName("IP Tablosu");
+        }
+        for (int r = 0; r < keySet.size(); r++) {
+            XSSFRow row = sheet.createRow(r);
+            Object[] objArr = map.get(r);
+            for(int c = 0; c < objArr.length; c++) {
+                XSSFCell cell = row.createCell(c);
+                    cell.setCellValue(objArr[c].toString());
             }
         }
 
+        for (int i =0;i<14; i++){
+            sheet.autoSizeColumn(i);
+        }
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         try {
             FileOutputStream out = new FileOutputStream(new File(URL));
+            alert.setTitle("Başarılı");
+            alert.setContentText("Başarılı bir şekilde yazdırıldı.\n\n"+URL);
+            alert.setHeaderText(null);
+            alert.showAndWait();
             workbook.write(out);
             out.close();
             System.out.println("Çıktı Başarılı bir şekilde yazdırıldı !");
 
         } catch (IOException e) {
+            alert.setTitle("Başarısız");
+            alert.setContentText("Yazdırılamadı lütfen tekrar deneyin!");
+            alert.setHeaderText(null);
+            alert.showAndWait();
             e.printStackTrace();
         }
 
     }
+
+
+
 
 
 
@@ -402,7 +443,6 @@ public class MainScreenController {
 
     @FXML
     void pingButtonAction(){
-        try {
             if(sendPingComboBox.getValue().equals("Router IP")){
                 sendPing(router.getText(),router);
             }
@@ -424,11 +464,6 @@ public class MainScreenController {
             if(sendPingComboBox.getValue().equals("Subnet Broadcast")){
                 sendPing(subnetBroadcast.getText(),subnetBroadcast);
             }
-            warningLabel1.setVisible(false);
-        }catch (NullPointerException e){
-            warningLabel1.setText("Seçim yapınız!");
-            warningLabel.setVisible(true);
-        }
 
     }
 
@@ -535,8 +570,6 @@ public class MainScreenController {
     }
 
     void setInfos(){
-        try {
-            if (ipValidation(subnetIP)){
                 if (selectedSubmask.equals(subnet248)){
                     ATM.setText(ATMIP);
                     subnetBroadcast.setText(subnetBroadcastIP);
@@ -556,15 +589,6 @@ public class MainScreenController {
                 DVRGateway.setText(DVRGatewayIP);
                 TGTunnel.setText(TGTunnelIP);
                 DVRMask.setVisible(true);
-            }else{
-                warningLabel.setText("IP adresi yanlış!");
-                warningLabel.setVisible(true);
-            }
-        }catch (NullPointerException e){
-            warningLabel.setText("Subnet Mask seçiniz!");
-            warningLabel.setVisible(true);
-        }
-
     }
 
     static boolean ipValidation(String IP){

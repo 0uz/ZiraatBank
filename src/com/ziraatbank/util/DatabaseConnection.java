@@ -308,12 +308,12 @@ public class DatabaseConnection {
 
     public Map<Integer,Object[]> exportExcelFile(){
         Map<Integer,Object[]> map = new TreeMap<Integer, Object[]>();
-        map.put(1,new Object[]{"İL","ŞUBE NUMARASI","ATM ADI","SUBNET","SUBNET BROADCAST","SUBNET MASK","ROUTER","1.ATM","ADSL TUNNEL","3G TUNNEL","DVR GATEWAY","DVR MASK","ATM ID","TERMİNAL NO"});
+        map.put(0,new Object[]{"İL","ŞUBE NUMARASI","ATM ADI","SUBNET","SUBNET BROADCAST","SUBNET MASK","ROUTER","1.ATM","ADSL TUNNEL","3G TUNNEL","DVR GATEWAY","DVR MASK","ATM ID","TERMİNAL NO"});
         String sql ="select * from database;";
         try (Connection connection=this.connect();
              Statement pst = connection.createStatement();
              ResultSet rs = pst.executeQuery(sql)){
-            int count=2;
+            int count=1;
             while (rs.next()){
                 map.put(count,new Object[]{
                         rs.getString("Sehir"),

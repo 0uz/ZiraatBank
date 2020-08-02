@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="750.0" style="-fx-border-color: #e10514;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ziraatbank.MainScreenController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="750.0" style="-fx-border-color: #e10514;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ziraatbank.MainScreenController">
    <top>
       <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="600.0" style="-fx-background-color: #e10514;" BorderPane.alignment="CENTER">
          <children>
@@ -32,109 +38,6 @@
             </Button>
          </children></HBox>
    </top>
-   <center>
-      <Pane prefHeight="420.0" prefWidth="413.0" BorderPane.alignment="CENTER">
-         <children>
-            <ComboBox fx:id="iller" layoutX="24.0" layoutY="48.0" prefWidth="150.0" promptText="Seçiniz" />
-            <Label layoutX="24.0" layoutY="24.0" prefHeight="17.0" prefWidth="150.0" text="İller">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </Label>
-            <Label layoutX="24.0" layoutY="96.0" prefHeight="17.0" prefWidth="150.0" text="Subnet IP">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </Label>
-            <Label layoutX="196.0" layoutY="24.0" prefHeight="17.0" prefWidth="150.0" text="Subnet Mask">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </Label>
-            <Label fx:id="subnetBroadcastText" layoutX="196.0" layoutY="96.0" prefHeight="17.0" prefWidth="150.0" text="Subnet Broadcast">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </Label>
-            <Label fx:id="routerIPText" layoutX="24.0" layoutY="273.0" prefHeight="17.0" prefWidth="150.0" text="Router IP">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </Label>
-            <Label layoutX="196.0" layoutY="274.0" prefHeight="17.0" prefWidth="150.0" text="ATM IP">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </Label>
-            <Label layoutX="23.0" layoutY="152.0" prefHeight="17.0" prefWidth="150.0" text="ADSL Tunnel">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </Label>
-            <Label layoutX="196.0" layoutY="153.0" prefHeight="17.0" prefWidth="150.0" text="3G Tunnel">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </Label>
-            <ComboBox fx:id="subnetMaskComboBox" disable="true" layoutX="196.0" layoutY="48.0" prefWidth="150.0" promptText="Seçiniz" />
-            <Label fx:id="subnetBroadcast" layoutX="196.0" layoutY="120.0" prefHeight="17.0" prefWidth="150.0">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </Label>
-            <Label fx:id="router" contentDisplay="CENTER" layoutX="24.0" layoutY="295.0" prefHeight="17.0" prefWidth="150.0">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </Label>
-            <Label fx:id="ATM" layoutX="196.0" layoutY="295.0" prefHeight="17.0" prefWidth="150.0">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </Label>
-            <Label layoutX="196.0" layoutY="215.0" prefHeight="17.0" prefWidth="150.0" text="DVR Mask">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </Label>
-            <Label layoutX="24.0" layoutY="216.0" prefHeight="17.0" prefWidth="150.0" text="DVR Gateway">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </Label>
-            <Label fx:id="DVRMask" layoutX="196.0" layoutY="239.0" prefHeight="17.0" prefWidth="150.0">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </Label>
-            <Label fx:id="DVRGateway" layoutX="25.0" layoutY="240.0" prefHeight="17.0" prefWidth="150.0">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </Label>
-            <Label fx:id="ADSLTunnel" layoutX="23.0" layoutY="176.0" prefHeight="17.0" prefWidth="150.0">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </Label>
-            <Label fx:id="TGTunnel" layoutX="196.0" layoutY="177.0" prefHeight="17.0" prefWidth="150.0">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </Label>
-            <Label fx:id="subnetIPLabel" layoutX="24.0" layoutY="119.0" prefHeight="17.0" prefWidth="150.0">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </Label>
-            <Button fx:id="pingAtButton" disable="true" layoutX="196.0" layoutY="335.0" mnemonicParsing="false" onAction="#pingButtonAction" prefHeight="25.0" prefWidth="72.0" text="Ping At" />
-            <ComboBox fx:id="sendPingComboBox" disable="true" layoutX="24.0" layoutY="335.0" prefHeight="25.0" prefWidth="150.0" promptText="Seçiniz" />
-            <Label fx:id="warningLabel1" alignment="CENTER" layoutX="41.0" layoutY="373.0" prefHeight="21.0" prefWidth="254.0" textOverrun="CLIP" />
-            <Button fx:id="ipBlockButton" disable="true" layoutX="25.0" layoutY="371.0" mnemonicParsing="false" onAction="#ipBlockAktarButton" text="IP Block Seç" />
-            <Button fx:id="databaseAktarButton" layoutX="116.0" layoutY="371.0" mnemonicParsing="false" onAction="#databaseAktarButton" text="Database Aktar" />
-         </children>
-      </Pane>
-   </center>
    <right>
       <VBox prefHeight="415.0" prefWidth="360.0" BorderPane.alignment="CENTER">
          <children>
@@ -173,11 +76,126 @@
                   <ComboBox fx:id="araSecComboBox" layoutX="16.0" layoutY="26.0" prefWidth="150.0" promptText="Seçiniz" />
                   <ComboBox fx:id="araSonucComboBox" disable="true" layoutX="184.0" layoutY="26.0" prefWidth="150.0" promptText="Seçiniz" />
                   <Button fx:id="araButton" disable="true" layoutX="135.0" layoutY="61.0" mnemonicParsing="false" onAction="#araButtonAction" prefHeight="25.0" prefWidth="80.0" text="Ara" />
-                  <ImageView fx:id="ZBimageView" fitHeight="80.0" fitWidth="310.0" layoutX="29.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true" smooth="false" />
+                  <ImageView fx:id="ZBimageView" fitHeight="80.0" fitWidth="310.0" layoutX="25.0" layoutY="104.0" pickOnBounds="true" preserveRatio="true" smooth="false" />
                   <Label layoutX="143.0" layoutY="6.0" text="Bul/Düzenle" />
                </children>
             </Pane>
          </children>
       </VBox>
    </right>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="400.0" prefWidth="388.0">
+               <children>
+                  <ComboBox fx:id="iller" layoutX="14.0" layoutY="39.0" prefWidth="150.0" promptText="Seçiniz" />
+                  <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="150.0" text="İller">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="83.0" prefHeight="17.0" prefWidth="150.0" text="Subnet IP">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label layoutX="190.0" layoutY="14.0" prefHeight="17.0" prefWidth="150.0" text="Subnet Mask">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="subnetBroadcastText" layoutX="190.0" layoutY="82.0" prefHeight="17.0" prefWidth="150.0" text="Subnet Broadcast">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="routerIPText" layoutX="14.0" layoutY="233.0" prefHeight="17.0" prefWidth="150.0" text="Router IP">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label layoutX="190.0" layoutY="232.0" prefHeight="17.0" prefWidth="150.0" text="ATM IP">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="133.0" prefHeight="17.0" prefWidth="150.0" text="ADSL Tunnel">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label layoutX="190.0" layoutY="132.0" prefHeight="17.0" prefWidth="150.0" text="3G Tunnel">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <ComboBox fx:id="subnetMaskComboBox" disable="true" layoutX="190.0" layoutY="39.0" prefWidth="150.0" promptText="Seçiniz" />
+                  <Label fx:id="subnetBroadcast" layoutX="190.0" layoutY="102.0" prefHeight="17.0" prefWidth="150.0">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="router" contentDisplay="CENTER" layoutX="14.0" layoutY="258.0" prefHeight="17.0" prefWidth="150.0">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="ATM" layoutX="190.0" layoutY="257.0" prefHeight="17.0" prefWidth="150.0">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label layoutX="190.0" layoutY="182.0" prefHeight="17.0" prefWidth="150.0" text="DVR Mask">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="183.0" prefHeight="17.0" prefWidth="150.0" text="DVR Gateway">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="DVRMask" layoutX="190.0" layoutY="207.0" prefHeight="17.0" prefWidth="150.0">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="DVRGateway" layoutX="14.0" layoutY="208.0" prefHeight="17.0" prefWidth="150.0">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="ADSLTunnel" layoutX="14.0" layoutY="158.0" prefHeight="17.0" prefWidth="150.0">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="TGTunnel" layoutX="190.0" layoutY="157.0" prefHeight="17.0" prefWidth="150.0">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="subnetIPLabel" layoutX="14.0" layoutY="103.0" prefHeight="17.0" prefWidth="150.0">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane prefHeight="140.0" prefWidth="388.0" style="-fx-border-color: #e10415; -fx-border-width: 1 0 1 0;">
+               <children>
+                  <ComboBox fx:id="sendPingComboBox" disable="true" layoutX="14.0" layoutY="9.0" prefHeight="25.0" prefWidth="160.0" promptText="Seçiniz" />
+                  <Button fx:id="pingAtButton" disable="true" layoutX="194.0" layoutY="9.0" mnemonicParsing="false" onAction="#pingButtonAction" prefHeight="25.0" prefWidth="80.0" text="Ping At" />
+               </children>
+            </Pane>
+            <Pane prefHeight="170.0" prefWidth="388.0">
+               <children>
+                  <Button fx:id="databaseAktarButton" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#databaseAktarButton" prefHeight="25.0" prefWidth="160.0" text="Database'i Excell'e Aktar" />
+                  <Button fx:id="ipBlockButton" disable="true" layoutX="194.0" layoutY="11.0" mnemonicParsing="false" onAction="#ipBlockAktarButton" prefWidth="80.0" text="IP Block Seç" />
+                  <Button fx:id="databaseAktarButton1" layoutX="14.0" layoutY="40.0" mnemonicParsing="false" onAction="#databaseAktarButton" prefWidth="160.0" text="Excel'den Database'e Aktar" />
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+   </center>
 </BorderPane>
