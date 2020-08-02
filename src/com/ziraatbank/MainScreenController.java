@@ -18,12 +18,12 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -75,8 +75,6 @@ public class MainScreenController {
     private String search="";
     private String key="";
 
-    File IPBLockFile;
-    File DatabaseFile;
 
     public void setATMName(boolean ATMName) {
         this.ATMName = ATMName;
@@ -103,7 +101,7 @@ public class MainScreenController {
 
     @FXML
     void initialize(){
-        File file = new File("src/main/resources/images/zb_logo.png");
+        File file = new File("./images/zb_logo.png");
         Image image = new Image(file.toURI().toString());
         ZBimageView.setImage(image);
         ZBimageView.setPreserveRatio(true);
@@ -270,17 +268,27 @@ public class MainScreenController {
         fileChooser.setTitle("IP Block Seçiniz!");
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("EXCEL File (*.XLSX)","*.XLSX");
         fileChooser.getExtensionFilters().add(extensionFilter);
-        IPBLockFile = fileChooser.showOpenDialog(null);
-        getExcel();
-        illerDoldur();
+        File IPBLockFile = fileChooser.showOpenDialog(null);
+        if (IPBLockFile!=null) {
+            getExcel(IPBLockFile);
+            illerDoldur();
+        }
     }
 
     @FXML
     void databaseAktarButton(){
-
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Konum Seçiniz!");
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("EXCEL File (*.XLSX)","*.XLSX");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+        File file = fileChooser.showSaveDialog(null);
+        if (file!=null){
+            setExcel(file.getAbsolutePath());
+        }
     }
-    @FXML
-    void getExcel() {
+
+
+    void getExcel(File IPBLockFile) {
         try {
             FileInputStream file = new FileInputStream(IPBLockFile);
             XSSFWorkbook workbook = new XSSFWorkbook(file);
@@ -301,6 +309,38 @@ public class MainScreenController {
         }
 
     }
+
+    void setExcel(String URL){
+        XSSFWorkbook workbook = new XSSFWorkbook();
+
+        XSSFSheet sheet = workbook.createSheet("Çıktı");
+
+        Set<Integer> keySet = connection.exportExcelFile().keySet();
+        Map<Integer, Object[]> map = connection.exportExcelFile();
+        int rowNum=0;
+        for (Integer key : keySet){
+            Row row = sheet.createRow(rowNum++);
+            Object[] objArr = map.get(key);
+            int cellNum = 0;
+            for (Object obj : objArr){
+                Cell cell = row.createCell(cellNum++);
+                cell.setCellValue((String)obj);
+            }
+        }
+
+        try {
+            FileOutputStream out = new FileOutputStream(new File(URL));
+            workbook.write(out);
+            out.close();
+            System.out.println("Çıktı Başarılı bir şekilde yazdırıldı !");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 
     @FXML
     void exitButtonAction(){
@@ -407,7 +447,7 @@ public class MainScreenController {
 
     }
 
-    boolean sendPing(String IP){
+    static boolean sendPing(String IP){
         try {
             InetAddress routerPing = InetAddress.getByName(IP);
             if (routerPing.isReachable(3000)){
@@ -426,6 +466,7 @@ public class MainScreenController {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
             alert1.setHeaderText(null);
+
             if (!(sendPing(routerIP)&&sendPing(DVRGatewayIP))) {
                 alert.setTitle("");
                 alert.setHeaderText("LÜTFEN BİLGİLERİ KONTROL EDİNİZ!");

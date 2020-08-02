@@ -19,6 +19,7 @@ public class UpdateScreenController {
     public Button exitButton;
     public Button kaydetButton;
     public Label routerIP;
+    public Button pingAtButton;
     public TextField atmAdıTextField;
     public TextField atmIDTextField;
     public TextField subeNumTextField;
@@ -29,7 +30,6 @@ public class UpdateScreenController {
     public Label subnetBroadcastIP;
     public Label atmIP;
     public Label TGTunnelIP;
-    public Label dvrMaskIP;
     public Label warningLabel;
     public Label warningLabel1;
     public Label warningLabel2;
@@ -296,6 +296,30 @@ public class UpdateScreenController {
             alert.setContentText("Başarıyla kaydedildi!");
             alert.showAndWait();
             iptalButton.fire();
+
+    }
+
+    @FXML
+    void pingAtButtonAction(){
+        if (MainScreenController.sendPing(routerIP.getText())){
+            routerIP.setStyle("-fx-background-color: lawngreen");
+            warningLabel1.setText("Router IP'ye ulaşıldı");
+            warningLabel1.setVisible(true);
+        }else{
+            routerIP.setStyle("-fx-background-color: red");
+            warningLabel1.setText("Router IP'ye ulaşılamadı");
+            warningLabel1.setVisible(true);
+        }
+
+        if (MainScreenController.sendPing(dvrGatewayTextField.getText())){
+            dvrGatewayTextField.setStyle("-fx-background-color: lawngreen");
+            warningLabel.setText("DVR Gateway'e ulaşıldı");
+            warningLabel.setVisible(true);
+        }else{
+            dvrGatewayTextField.setStyle("-fx-background-color: red");
+            warningLabel.setText("DVR Gateway'e ulaşılamadı");
+            warningLabel.setVisible(true);
+        }
 
     }
 

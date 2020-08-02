@@ -2,6 +2,8 @@ package com.ziraatbank.util;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class DatabaseConnection {
     Connection connection=null;
@@ -91,7 +93,7 @@ public class DatabaseConnection {
     public boolean setInfos(String Sehir,String atmAdı, String subeNum, String atmID, String subnetMask, String subnetIP, String subnetBroadcast,
                             String routerIP, String atmIP, String ADSLTunnel, String TGTunnel, String DVRMask, String DVRGateway, String terminalNo){
             String sql ="insert into database (Sehir, AtmAdı, SubeNum, AtmID, SubnetMask, " +
-                        "SubnetIP, SubnetBroadcast, RouterIP, AtmIP, ADSLTunnel, TGTunnel, DVRMask, TerminalNo) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                        "SubnetIP, SubnetBroadcast, RouterIP, AtmIP, ADSLTunnel, TGTunnel, DVRMask, DVRGateway, TerminalNo) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                     try (Connection connection=this.connect();
                     PreparedStatement pst = connection.prepareStatement(sql)){
                         pst.setString(1,Sehir);
@@ -106,7 +108,8 @@ public class DatabaseConnection {
                         pst.setString(10,ADSLTunnel);
                         pst.setString(11,TGTunnel);
                         pst.setString(12,DVRMask);
-                        pst.setString(13,terminalNo);
+                        pst.setString(13,DVRGateway);
+                        pst.setString(14,terminalNo);
                         pst.executeUpdate();
                         return true;
                     }catch(SQLException e){
@@ -300,6 +303,44 @@ public class DatabaseConnection {
             e.printStackTrace();
             return null;
         }
+
+    }
+
+    public Map<Integer,Object[]> exportExcelFile(){
+        Map<Integer,Object[]> map = new TreeMap<Integer, Object[]>();
+        map.put(1,new Object[]{"İL","ŞUBE NUMARASI","ATM ADI","SUBNET","SUBNET BROADCAST","SUBNET MASK","ROUTER","1.ATM","ADSL TUNNEL","3G TUNNEL","DVR GATEWAY","DVR MASK","ATM ID","TERMİNAL NO"});
+        String sql ="select * from database;";
+        try (Connection connection=this.connect();
+             Statement pst = connection.createStatement();
+             ResultSet rs = pst.executeQuery(sql)){
+            int count=2;
+            while (rs.next()){
+                map.put(count,new Object[]{
+                        rs.getString("Sehir"),
+                        rs.getString("SubeNum"),
+                        rs.getString("AtmAdı"),
+                        rs.getString("SubnetIP"),
+                        rs.getString("SubnetBroadcast"),
+                        rs.getString("SubnetMask"),
+                        rs.getString("RouterIP"),
+                        rs.getString("AtmIP"),
+                        rs.getString("ADSLTunnel"),
+                        rs.getString("TGTunnel"),
+                        rs.getString("DVRGateway"),
+                        rs.getString("DVRMask"),
+                        rs.getString("AtmID"),
+                        rs.getString("TerminalNo"),
+
+                });
+
+                count++;
+            }
+            return map;
+        }catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+
 
     }
 
