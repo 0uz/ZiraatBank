@@ -90,14 +90,14 @@ public class DatabaseConnection {
 
     }
 
-    public boolean setInfos(String Sehir,String atmAdı, String subeNum, String atmID, String subnetMask, String subnetIP, String subnetBroadcast,
+    public boolean setInfos(String Sehir,String atmAdi, String subeNum, String atmID, String subnetMask, String subnetIP, String subnetBroadcast,
                             String routerIP, String atmIP, String ADSLTunnel, String TGTunnel, String DVRMask, String DVRGateway, String terminalNo){
             String sql ="insert into database (Sehir, AtmAdı, SubeNum, AtmID, SubnetMask, " +
                         "SubnetIP, SubnetBroadcast, RouterIP, AtmIP, ADSLTunnel, TGTunnel, DVRMask, DVRGateway, TerminalNo) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                     try (Connection connection=this.connect();
                     PreparedStatement pst = connection.prepareStatement(sql)){
                         pst.setString(1,Sehir);
-                        pst.setString(2,atmAdı);
+                        pst.setString(2,atmAdi);
                         pst.setString(3,subeNum);
                         pst.setString(4,atmID);
                         pst.setString(5,subnetMask);
@@ -123,13 +123,9 @@ public class DatabaseConnection {
         try (Connection connection=this.connect();
              Statement pst = connection.createStatement();
             ResultSet rs = pst.executeQuery(sql)){
-            while (rs.next()){
+            if (rs.next()){
                 String subnetIP = rs.getString("SubnetIP");
-                if (subnetIP.length()==0){
-                    return false;
-                }else{
-                    return true;
-                }
+                return subnetIP.length() != 0;
             }
             return false;
         }catch(SQLException e){
@@ -143,13 +139,9 @@ public class DatabaseConnection {
         try (Connection connection=this.connect();
              Statement pst = connection.createStatement();
              ResultSet rs = pst.executeQuery(sql)){
-            while (rs.next()){
+            if (rs.next()){
                 String subnetIP = rs.getString("DVRGateway");
-                if (subnetIP.length()==0){
-                    return false;
-                }else{
-                    return true;
-                }
+                return subnetIP.length() != 0;
             }
             return false;
         }catch(SQLException e){
@@ -163,13 +155,9 @@ public class DatabaseConnection {
         try (Connection connection=this.connect();
              Statement pst = connection.createStatement();
              ResultSet rs = pst.executeQuery(sql)){
-            while (rs.next()){
+            if (rs.next()){
                 String subnetIP = rs.getString("ADSLTunnel");
-                if (subnetIP.length()==0){
-                    return false;
-                }else{
-                    return true;
-                }
+                return subnetIP.length() != 0;
             }
             return false;
         }catch(SQLException e){
@@ -183,7 +171,7 @@ public class DatabaseConnection {
         try (Connection connection=this.connect();
              Statement pst = connection.createStatement();
              ResultSet rs = pst.executeQuery(sql)){
-            ArrayList<String> iller= new ArrayList();
+            ArrayList<String> iller= new ArrayList<>();
             while (rs.next()){
                iller.add(rs.getString("Sehir"));
             }
@@ -201,7 +189,7 @@ public class DatabaseConnection {
         try (Connection connection=this.connect();
              Statement pst = connection.createStatement();
              ResultSet rs = pst.executeQuery(sql)){
-            ArrayList<String> result= new ArrayList();
+            ArrayList<String> result= new ArrayList<>();
             while (rs.next()){
                 result.add(rs.getString("AtmAdı"));
                 result.add(rs.getString("AtmID"));
@@ -231,12 +219,8 @@ public class DatabaseConnection {
         try (Connection connection=this.connect();
              Statement pst = connection.createStatement();
              ResultSet rs = pst.executeQuery(sql)){
-                while (rs.next()){
-                    if (rs.getString(1).isEmpty()){
-                        return false;
-                    }else{
-                        return true;
-                    }
+                if (rs.next()){
+                    return !rs.getString(1).isEmpty();
                 }
                 return false;
         }catch(SQLException e){
@@ -245,7 +229,7 @@ public class DatabaseConnection {
         }
     }
 
-    public boolean updateInfos(String search,String key, String atmAdi, String atmID,
+    public void updateInfos(String search, String key, String atmAdi, String atmID,
                             String subeNum, String subnetIP, String routerIP,
                             String subnetBroadcastIp, String atmIP,
                             String adslTunelIP, String TGTunnelI,
@@ -281,10 +265,8 @@ public class DatabaseConnection {
             pstmt.setString(12,key);
 
             pstmt.executeUpdate();
-            return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
 
     }
@@ -294,7 +276,7 @@ public class DatabaseConnection {
         try (Connection connection=this.connect();
              Statement pst = connection.createStatement();
              ResultSet rs = pst.executeQuery(sql)){
-            ArrayList<String> result= new ArrayList();
+            ArrayList<String> result= new ArrayList<>();
             while (rs.next()){
                 result.add(rs.getString(search));
             }
@@ -307,7 +289,7 @@ public class DatabaseConnection {
     }
 
     public Map<Integer,Object[]> exportExcelFile(){
-        Map<Integer,Object[]> map = new TreeMap<Integer, Object[]>();
+        Map<Integer,Object[]> map = new TreeMap<>();
         map.put(0,new Object[]{"İL","ŞUBE NUMARASI","ATM ADI","SUBNET","SUBNET BROADCAST","SUBNET MASK","ROUTER","1.ATM","ADSL TUNNEL","3G TUNNEL","DVR GATEWAY","DVR MASK","ATM ID","TERMİNAL NO"});
         String sql ="select * from database;";
         try (Connection connection=this.connect();

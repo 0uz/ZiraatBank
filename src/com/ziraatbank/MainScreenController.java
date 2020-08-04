@@ -13,19 +13,18 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.apache.poi.ss.SpreadsheetVersion;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.AreaReference;
-import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.*;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTable;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTableColumn;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTableColumns;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTableStyleInfo;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Map;
@@ -69,7 +68,7 @@ public class MainScreenController {
     private final String subnet252 = "255.255.255.252";
     private final String subnet248 = "255.255.255.248";
     private String DVRGatewayIP = "10.240.1.1";
-    private String DVRMaskIP = "255.255.255.248";
+    private final String DVRMaskIP = "255.255.255.248";
     private String ADSLTunnelIP = "10.86.0.1";
     private String TGTunnelIP = "10.86.0.1";
     private String routerIP = "";
@@ -278,6 +277,7 @@ public class MainScreenController {
         if (IPBlockFile!=null) {
             getExcel(IPBlockFile);
             illerDoldur();
+            ipBlockButton.setDisable(true);
         }
     }
 
@@ -436,7 +436,7 @@ public class MainScreenController {
         searchEmptyIP();
         searchEmptyADSLTunnel();
         searchEmptyDVRGateway();
-        TGTunnelCalc(ADSLTunnelIP);
+        TGTunnelIP = TGTunnelCalc(ADSLTunnelIP);
         IPCalc();
         setInfos();
     }
@@ -468,9 +468,8 @@ public class MainScreenController {
     }
 
     void sendPing(String IP, Label label){
-        InetAddress routerPing = null;
         try {
-            routerPing = InetAddress.getByName(IP);
+            InetAddress routerPing = InetAddress.getByName(IP);
             if (routerPing.isReachable(3000)){
                 label.setStyle("-fx-background-color: lawngreen;");
             }else{
@@ -518,7 +517,8 @@ public class MainScreenController {
                                 "\nADSL Tunnel:           "+ADSLTunnelIP+
                                 "\nDVR Gateway:         "+DVRGatewayIP+
                                 "\n3G Tunnel:              "+ TGTunnelIP+
-                                "\nDVR Mask:              "+ DVRMaskIP);
+                                "\nDVR Mask:              "+ DVRMaskIP+
+                                "\n Terminal No:          "+terminalNoTextField.getText());
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get()== ButtonType.OK){
                     boolean checkConn=connection.setInfos(

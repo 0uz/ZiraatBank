@@ -192,7 +192,7 @@
                <children>
                   <Button fx:id="databaseAktarButton" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#databaseAktarButton" prefHeight="25.0" prefWidth="160.0" text="Database'i Excell'e Aktar" />
                   <Button fx:id="ipBlockButton" disable="true" layoutX="194.0" layoutY="11.0" mnemonicParsing="false" onAction="#ipBlockAktarButton" prefWidth="80.0" text="IP Block Seç" />
-                  <Button fx:id="databaseAktarButton1" layoutX="14.0" layoutY="40.0" mnemonicParsing="false" onAction="#databaseAktarButton" prefWidth="160.0" text="Excel'den Database'e Aktar" />
+                  <Button fx:id="exceldenAktarButton" layoutX="14.0" layoutY="40.0" mnemonicParsing="false" prefWidth="160.0" text="Excel'den Database'e Aktar" />
                </children>
             </Pane>
          </children>

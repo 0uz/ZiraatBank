@@ -20,7 +20,7 @@ public class UpdateScreenController {
     public Button kaydetButton;
     public Label routerIP;
     public Button pingAtButton;
-    public TextField atmAdıTextField;
+    public TextField atmAdiTextField;
     public TextField atmIDTextField;
     public TextField subeNumTextField;
     public TextField subnetIPTextField;
@@ -161,12 +161,12 @@ public class UpdateScreenController {
             }
         });
 
-        atmAdıTextField.textProperty().addListener((observableValue, s, t1) -> {
+        atmAdiTextField.textProperty().addListener((observableValue, s, t1) -> {
             if (t1.length()<2){
-                atmAdıTextField.setStyle("-fx-border-color: red");
+                atmAdiTextField.setStyle("-fx-border-color: red");
                 kaydetButton.setDisable(true);
             }else{
-                atmAdıTextField.setStyle("-fx-border-color: transparent");
+                atmAdiTextField.setStyle("-fx-border-color: transparent");
                 kaydetButton.setDisable(false);
             }
         });
@@ -240,7 +240,7 @@ public class UpdateScreenController {
 
     public void setInfosToFields(String searchName, String key){
         ArrayList<String> list = connection.getInfos(searchName,key);
-        atmAdıTextField.setText(list.get(0));
+        atmAdiTextField.setText(list.get(0));
         atmIDTextField.setText(list.get(1));
         subeNumTextField.setText(list.get(2));
         subnetIPTextField.setText(list.get(3));
@@ -286,7 +286,7 @@ public class UpdateScreenController {
 
     @FXML
     void kaydetButton (){
-            connection.updateInfos(search,key,atmAdıTextField.getText(),atmIDTextField.getText()
+            connection.updateInfos(search,key, atmAdiTextField.getText(),atmIDTextField.getText()
             ,subeNumTextField.getText(), subnetIPTextField.getText(),routerIP.getText(),
                     subnetBroadcastIP.getText(),atmIP.getText(),adslTunnelTextField.getText(),
                     TGTunnelIP.getText(),dvrGatewayTextField.getText(),terminalNoTextField.getText());

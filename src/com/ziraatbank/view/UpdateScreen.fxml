@@ -74,7 +74,7 @@
                         <Insets left="5.0" right="5.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField fx:id="atmAdıTextField" prefHeight="25.0" prefWidth="200.0">
+                  <TextField fx:id="atmAdiTextField" prefHeight="25.0" prefWidth="200.0">
                      <VBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </VBox.margin>
