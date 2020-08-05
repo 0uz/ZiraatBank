@@ -27,6 +27,7 @@ public class UpdateScreenController {
     public TextField adslTunnelTextField;
     public TextField dvrGatewayTextField;
     public TextField terminalNoTextField;
+    public TextField subeAdiTextField;
     public Label subnetBroadcastIP;
     public Label atmIP;
     public Label TGTunnelIP;
@@ -254,6 +255,7 @@ public class UpdateScreenController {
             subnetMaskComboBox.getSelectionModel().select(subnet252);
         }
         terminalNoTextField.setText(list.get(12));
+        subeAdiTextField.setText(list.get(13));
 
     }
 
@@ -286,7 +288,7 @@ public class UpdateScreenController {
             connection.updateInfos(search,key, atmAdiTextField.getText(),atmIDTextField.getText()
             ,subeNumTextField.getText(), subnetIPTextField.getText(),routerIP.getText(),
                     subnetBroadcastIP.getText(),atmIP.getText(),adslTunnelTextField.getText(),
-                    TGTunnelIP.getText(),dvrGatewayTextField.getText(),terminalNoTextField.getText());
+                    TGTunnelIP.getText(),dvrGatewayTextField.getText(),terminalNoTextField.getText(),subeAdiTextField.getText());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
             alert.setContentText("Başarıyla kaydedildi!");

@@ -41,7 +41,7 @@
    <right>
       <VBox prefHeight="415.0" prefWidth="360.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane nodeOrientation="LEFT_TO_RIGHT" prefHeight="212.0" prefWidth="375.0" style="-fx-border-color: #e10415; -fx-border-width: 0 0 0 1;">
+            <Pane nodeOrientation="LEFT_TO_RIGHT" prefHeight="250.0" prefWidth="375.0" style="-fx-border-color: #e10415; -fx-border-width: 0 0 0 1;">
                <children>
                   <TextField fx:id="atmNameTextField" layoutX="16.0" layoutY="47.0" prefWidth="150.0" promptText="En az 2 hane" />
                   <Label layoutX="16.0" layoutY="24.0" prefHeight="17.0" prefWidth="150.0" text="ATM Adı">
@@ -55,20 +55,26 @@
                         <Insets top="5.0" />
                      </padding>
                   </Label>
-                  <TextField fx:id="subeNumTextField" layoutX="16.0" layoutY="109.0" prefWidth="150.0" promptText="1-5 haneli sayı" />
-                  <Label layoutX="16.0" layoutY="89.0" prefHeight="17.0" prefWidth="150.0" text="Şube Numarası">
+                  <TextField fx:id="subeNumTextField" layoutX="184.0" layoutY="99.0" prefWidth="150.0" promptText="1-5 haneli sayı" />
+                  <Label layoutX="184.0" layoutY="77.0" prefHeight="17.0" prefWidth="150.0" text="Şube Numarası">
                      <padding>
                         <Insets top="5.0" />
                      </padding>
                   </Label>
-                  <Button fx:id="kaydetButton" disable="true" layoutX="135.0" layoutY="149.0" mnemonicParsing="false" onAction="#kaydetButtonAction" prefHeight="25.0" prefWidth="80.0" text="Kaydet" />
-                  <TextField fx:id="terminalNoTextField" layoutX="184.0" layoutY="109.0" prefWidth="150.0" promptText="4-6 haneli sayı" />
-                  <Label layoutX="184.0" layoutY="86.0" prefHeight="17.0" prefWidth="150.0" text="Terminal No">
+                  <Button fx:id="kaydetButton" disable="true" layoutX="191.0" layoutY="153.0" mnemonicParsing="false" onAction="#kaydetButtonAction" prefHeight="25.0" prefWidth="80.0" text="Kaydet" />
+                  <Label fx:id="warningLabel" alignment="CENTER" layoutX="30.0" layoutY="190.0" prefHeight="22.0" prefWidth="301.0" textAlignment="CENTER">
                      <padding>
                         <Insets top="5.0" />
                      </padding>
                   </Label>
-                  <Label fx:id="warningLabel" alignment="CENTER" layoutX="25.0" layoutY="180.0" prefHeight="22.0" prefWidth="301.0" textAlignment="CENTER">
+                  <TextField fx:id="subeAdıTextField" layoutX="16.0" layoutY="100.0" prefWidth="150.0" promptText="En az 2 hane" />
+                  <Label layoutX="16.0" layoutY="78.0" prefHeight="17.0" prefWidth="150.0" text="Şube Adı">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="terminalNoTextField" layoutX="16.0" layoutY="153.0" prefWidth="150.0" promptText="4-6 haneli sayı" />
+                  <Label layoutX="16.0" layoutY="130.0" prefHeight="17.0" prefWidth="150.0" text="Terminal No">
                      <padding>
                         <Insets top="5.0" />
                      </padding>
@@ -80,7 +86,7 @@
                   <ComboBox fx:id="araSecComboBox" layoutX="16.0" layoutY="26.0" prefWidth="150.0" promptText="Seçiniz" />
                   <ComboBox fx:id="araSonucComboBox" disable="true" layoutX="184.0" layoutY="26.0" prefWidth="150.0" promptText="Seçiniz" />
                   <Button fx:id="araButton" disable="true" layoutX="135.0" layoutY="61.0" mnemonicParsing="false" onAction="#araButtonAction" prefHeight="25.0" prefWidth="80.0" text="Ara" />
-                  <ImageView fx:id="ZBimageView" fitHeight="80.0" fitWidth="310.0" layoutX="25.0" layoutY="104.0" pickOnBounds="true" preserveRatio="true" smooth="false" />
+                  <ImageView fx:id="ZBimageView" fitHeight="80.0" fitWidth="310.0" layoutX="20.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true" smooth="false" />
                   <Label layoutX="143.0" layoutY="6.0" text="Bul/Düzenle" />
                </children>
             </Pane>

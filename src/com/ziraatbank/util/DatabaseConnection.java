@@ -46,7 +46,8 @@ public class DatabaseConnection {
                 "TGTunnel varchar(15)," +
                 "DVRMask varchar(15)," +
                 "DVRGateway varchar(15)," +
-                "TerminalNo varchar(7));";
+                "TerminalNo varchar(7)," +
+                "SubeAdı varchar);";
 
         String sql2 = "CREATE TABLE IF NOT EXISTS IPBlock (" +
                 "Sehir varchar," +
@@ -91,9 +92,9 @@ public class DatabaseConnection {
     }
 
     public boolean setInfos(String Sehir,String atmAdi, String subeNum, String atmID, String subnetMask, String subnetIP, String subnetBroadcast,
-                            String routerIP, String atmIP, String ADSLTunnel, String TGTunnel, String DVRMask, String DVRGateway, String terminalNo){
+                            String routerIP, String atmIP, String ADSLTunnel, String TGTunnel, String DVRMask, String DVRGateway, String terminalNo,String subeAdi){
             String sql ="insert into database (Sehir, AtmAdı, SubeNum, AtmID, SubnetMask, " +
-                        "SubnetIP, SubnetBroadcast, RouterIP, AtmIP, ADSLTunnel, TGTunnel, DVRMask, DVRGateway, TerminalNo) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                        "SubnetIP, SubnetBroadcast, RouterIP, AtmIP, ADSLTunnel, TGTunnel, DVRMask, DVRGateway, TerminalNo, SubeAdı) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                     try (Connection connection=this.connect();
                     PreparedStatement pst = connection.prepareStatement(sql)){
                         pst.setString(1,Sehir);
@@ -110,6 +111,7 @@ public class DatabaseConnection {
                         pst.setString(12,DVRMask);
                         pst.setString(13,DVRGateway);
                         pst.setString(14,terminalNo);
+                        pst.setString(15,subeAdi);
                         pst.executeUpdate();
                         return true;
                     }catch(SQLException e){
@@ -185,7 +187,7 @@ public class DatabaseConnection {
     public ArrayList<String> getInfos(String searchName, String key){
         String sql ="select AtmAdı,AtmID,SubeNum,SubnetIP,RouterIP," +
                 "SubnetBroadcast,AtmIP,ADSLTunnel,TGTunnel,DVRGateway," +
-                "DVRMask, SubnetMask, TerminalNo from database where "+searchName+"='"+key+"'";
+                "DVRMask, SubnetMask, TerminalNo, SubeAdı from database where "+searchName+"='"+key+"'";
         try (Connection connection=this.connect();
              Statement pst = connection.createStatement();
              ResultSet rs = pst.executeQuery(sql)){
@@ -204,6 +206,7 @@ public class DatabaseConnection {
                 result.add(rs.getString("DVRMask"));
                 result.add(rs.getString("SubnetMask"));
                 result.add(rs.getString("TerminalNo"));
+                result.add(rs.getString("SubeAdı"));
             }
             return result;
         }catch(SQLException e){
@@ -232,7 +235,7 @@ public class DatabaseConnection {
                             String subeNum, String subnetIP, String routerIP,
                             String subnetBroadcastIp, String atmIP,
                             String adslTunelIP, String TGTunnelI,
-                            String DVRGateway , String terminalNo){
+                            String DVRGateway , String terminalNo, String subeAdi){
 
         String sql = "update database set " +
                 "AtmAdı = ? ," +
@@ -246,6 +249,7 @@ public class DatabaseConnection {
                 "TGTunnel = ? ," +
                 "DVRGateway = ? ," +
                 "TerminalNo = ? " +
+                "SubeAdı = ? " +
                 "where "+search+"= ?;";
 
         try (Connection conn = this.connect();
@@ -261,7 +265,8 @@ public class DatabaseConnection {
             pstmt.setString(9,TGTunnelI);
             pstmt.setString(10,DVRGateway);
             pstmt.setString(11,terminalNo);
-            pstmt.setString(12,key);
+            pstmt.setString(12,subeAdi);
+            pstmt.setString(13,key);
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -289,7 +294,7 @@ public class DatabaseConnection {
 
     public Map<Integer,Object[]> exportExcelFile(){
         Map<Integer,Object[]> map = new TreeMap<>();
-        map.put(0,new Object[]{"İL","ŞUBE NUMARASI","ATM ADI","SUBNET","SUBNET BROADCAST","SUBNET MASK","ROUTER","1.ATM","ADSL TUNNEL","3G TUNNEL","DVR GATEWAY","DVR MASK","ATM ID","TERMİNAL NO"});
+        map.put(0,new Object[]{"İL","ŞUBE NUMARASI","ŞUBE ADI","ATM ADI","SUBNET","SUBNET BROADCAST","SUBNET MASK","ROUTER","1.ATM","ADSL TUNNEL","3G TUNNEL","DVR GATEWAY","DVR MASK","ATM ID","TERMİNAL NO"});
         String sql ="select * from database;";
         try (Connection connection=this.connect();
              Statement pst = connection.createStatement();
@@ -299,6 +304,7 @@ public class DatabaseConnection {
                 map.put(count,new Object[]{
                         rs.getString("Sehir"),
                         rs.getString("SubeNum"),
+                        rs.getString("SubeAdı"),
                         rs.getString("AtmAdı"),
                         rs.getString("SubnetIP"),
                         rs.getString("SubnetBroadcast"),
@@ -310,8 +316,7 @@ public class DatabaseConnection {
                         rs.getString("DVRGateway"),
                         rs.getString("DVRMask"),
                         rs.getString("AtmID"),
-                        rs.getString("TerminalNo"),
-
+                        rs.getString("TerminalNo")
                 });
 
                 count++;

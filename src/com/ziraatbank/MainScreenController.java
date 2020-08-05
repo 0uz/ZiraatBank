@@ -54,10 +54,12 @@ public class MainScreenController {
     public Button pingAtButton;
     public Button ipBlockButton;
     public Button databaseAktarButton;
+    public Button exceldenAktarButton;
     public TextField ATMIDTextField;
     public TextField atmNameTextField;
     public TextField subeNumTextField;
     public TextField terminalNoTextField;
+    public TextField subeAdıTextField;
     public ComboBox<String> subnetMaskComboBox;
     public ComboBox<String> iller;
     public ComboBox<String> araSecComboBox;
@@ -102,11 +104,16 @@ public class MainScreenController {
         this.subnetMask = subnetMask;
     }
 
+    public void setSubeAdı(boolean subeAdı) {
+        this.subeAdı = subeAdı;
+    }
+
     boolean ATMName=false;
     boolean ATMID=false;
     boolean subeNum=false;
     boolean terminalNo=false;
     boolean subnetMask=false;
+    boolean subeAdı=false;
     DatabaseConnection connection= new DatabaseConnection();
 
     @FXML
@@ -169,6 +176,19 @@ public class MainScreenController {
             }
 
         } );
+        subeAdıTextField.textProperty().addListener((observableValue, s, t1) -> {
+            if(t1.length()>=2){
+                warningLabel.setVisible(false);
+                subeAdıTextField.setStyle("-fx-border-color: lawngreen");
+                setSubeAdı(true);
+            }else{
+                subeAdıTextField.setStyle("-fx-border-color: red");
+                warningLabel.setText("Şube Adı adı çok kısa");
+                warningLabel.setVisible(true);
+                setSubeAdı(false);
+            }
+            disableKaydetButton();
+        });
 
         terminalNoTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             String value = newValue;
@@ -178,8 +198,8 @@ public class MainScreenController {
             }
 
             if (integerValid(value,4,6)){
+                terminalNoTextField.setText("Z"+value);
                 if (!connection.checkConflict("TerminalNo",terminalNoTextField.getText())){
-                    terminalNoTextField.setText("Z"+value);
                     terminalNoTextField.setStyle("-fx-border-color: lawngreen");
                     setTerminalNo(true);
                     warningLabel.setVisible(false);
@@ -278,7 +298,7 @@ public class MainScreenController {
     }
 
     void disableKaydetButton(){
-        if (ATMID&&ATMName&&subeNum&&terminalNo&&subnetMask){
+        if (ATMID&&ATMName&&subeNum&&terminalNo&&subnetMask&&subeAdı){
             kaydetButton.setDisable(false);
             warningLabel.setText("Kaydederken ping kontrolu yapılacak lütfen bekleyin!");
             warningLabel.setVisible(true);
@@ -350,7 +370,7 @@ public class MainScreenController {
         cttable.setDisplayName("Tablo");
         cttable.setId(1);
         cttable.setName("Tablo");
-        cttable.setRef("A1:N"+keySet.size());
+        cttable.setRef("A1:O"+keySet.size());
         cttable.setTotalsRowShown(true);
 
         CTTableStyleInfo styleInfo = cttable.addNewTableStyleInfo();
@@ -359,8 +379,8 @@ public class MainScreenController {
         styleInfo.setShowRowStripes(true);
 
         CTTableColumns columns = cttable.addNewTableColumns();
-        columns.setCount(14);
-        for (int i = 1; i <= 14; i++) {
+        columns.setCount(15);
+        for (int i = 1; i <= 15; i++) {
             CTTableColumn column = columns.addNewTableColumn();
             column.setId(i);
             column.setName("IP Tablosu");
@@ -374,7 +394,7 @@ public class MainScreenController {
             }
         }
 
-        for (int i =0;i<14; i++){
+        for (int i =0;i<15; i++){
             sheet.autoSizeColumn(i);
         }
 
@@ -570,7 +590,8 @@ public class MainScreenController {
                     TGTunnelIP,
                     DVRMaskIP,
                     DVRGatewayIP,
-                    terminalNoTextField.getText());
+                    terminalNoTextField.getText(),
+                    subeAdıTextField.getText());
             if (checkConn) {
                 alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setTitle("Başarılı!");
@@ -751,6 +772,8 @@ public class MainScreenController {
         ATMIDTextField.setText("");
         ATMIDTextField.setStyle("-fx-border-color: transparent");
         terminalNoTextField.setText("");
+        terminalNoTextField.setStyle("-fx-border-color: transparent");
+        subeAdıTextField.setText("");
         terminalNoTextField.setStyle("-fx-border-color: transparent");
         subnetIPLabel.setText("");
         subnetBroadcast.setText("");
