@@ -46,6 +46,7 @@ public class MainScreenController {
     public Label router;
     public Label ATM;
     public Label warningLabel;
+    public Label ipBlockWarningLabel;
     public Button kaydetButton;
     public Button minimizeButton;
     public Button exitButton;
@@ -97,11 +98,15 @@ public class MainScreenController {
         this.terminalNo = terminalNo;
     }
 
+    public void setSubnetMask(boolean subnetMask) {
+        this.subnetMask = subnetMask;
+    }
+
     boolean ATMName=false;
     boolean ATMID=false;
     boolean subeNum=false;
     boolean terminalNo=false;
-
+    boolean subnetMask=false;
     DatabaseConnection connection= new DatabaseConnection();
 
     @FXML
@@ -131,6 +136,7 @@ public class MainScreenController {
 
         if (iller.getItems().isEmpty()) {
             ipBlockButton.setDisable(false);
+            ipBlockWarningLabel.setVisible(true);
         }
 
         araSecComboBox.valueProperty().addListener((observableValue, s, t1) -> {
@@ -172,9 +178,15 @@ public class MainScreenController {
             }
 
             if (integerValid(value,4,6)){
-                terminalNoTextField.setText("Z"+value);
-                terminalNoTextField.setStyle("-fx-border-color: lawngreen");
-                setTerminalNo(true);
+                if (!connection.checkConflict("TerminalNo",terminalNoTextField.getText())){
+                    terminalNoTextField.setText("Z"+value);
+                    terminalNoTextField.setStyle("-fx-border-color: lawngreen");
+                    setTerminalNo(true);
+                    warningLabel.setVisible(false);
+                }else{
+                    warningLabel.setText("Terminal No çakışıyor");
+                    warningLabel.setVisible(true);
+                }
             }else{
                 terminalNoTextField.setStyle("-fx-border-color: red");
                 setTerminalNo(false);
@@ -200,8 +212,15 @@ public class MainScreenController {
         ATMIDTextField.textProperty().addListener((observableValue, s, t1) -> {
 
             if (integerValid(t1,4,6)){
-                ATMIDTextField.setStyle("-fx-border-color: lawngreen");
-                setATMID(true);
+                if (!connection.checkConflict("AtmID",t1)){
+                    ATMIDTextField.setStyle("-fx-border-color: lawngreen");
+                    setATMID(true);
+                    warningLabel.setVisible(false);
+                }else{
+                    warningLabel.setText("Atm ID çakışıyor");
+                    warningLabel.setVisible(true);
+                }
+
             }else{
                 ATMIDTextField.setStyle("-fx-border-color: red");
                 setATMID(false);
@@ -224,6 +243,8 @@ public class MainScreenController {
         subnetMaskComboBox.valueProperty().addListener(observable -> {
             IPHesapla();
             sendPingComboBox.setDisable(false);
+            setSubnetMask(true);
+            disableKaydetButton();
         } );
 
         araSecComboBox.valueProperty().addListener(observable -> {
@@ -257,13 +278,12 @@ public class MainScreenController {
     }
 
     void disableKaydetButton(){
-        if (ATMID&&ATMName&&subeNum&&terminalNo){
+        if (ATMID&&ATMName&&subeNum&&terminalNo&&subnetMask){
             kaydetButton.setDisable(false);
             warningLabel.setText("Kaydederken ping kontrolu yapılacak lütfen bekleyin!");
             warningLabel.setVisible(true);
         }else{
             kaydetButton.setDisable(true);
-            warningLabel.setVisible(false);
         }
     }
 
@@ -278,6 +298,7 @@ public class MainScreenController {
             getExcel(IPBlockFile);
             illerDoldur();
             ipBlockButton.setDisable(true);
+            ipBlockWarningLabel.setVisible(false);
         }
     }
 
@@ -366,7 +387,6 @@ public class MainScreenController {
             alert.showAndWait();
             workbook.write(out);
             out.close();
-            System.out.println("Çıktı Başarılı bir şekilde yazdırıldı !");
 
         } catch (IOException e) {
             alert.setTitle("Başarısız");
@@ -497,64 +517,76 @@ public class MainScreenController {
 
     @FXML
     void kaydetButtonAction() {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
-            alert1.setHeaderText(null);
-
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
             if (!(sendPing(routerIP)&&sendPing(DVRGatewayIP))) {
-                alert.setTitle("");
-                alert.setHeaderText("LÜTFEN BİLGİLERİ KONTROL EDİNİZ!");
-                alert.setContentText(
-                        "İl:                             "+selectedCity+
-                                "\nATM Adı:                 "+atmNameTextField.getText()+
-                                "\nATM ID:                  "+ATMIDTextField.getText()+
-                                "\nŞube Numarası:       "+subeNumTextField.getText()+
-                                "\nSubnet Mask:          "+selectedSubmask+
-                                "\nSubnet IP :             "+subnetIP+
-                                "\nSubnet Broadcast:   "+subnetBroadcastIP+
-                                "\nRouter IP:                "+ routerIP+
-                                "\nATM IP:                   "+ATMIP+
-                                "\nADSL Tunnel:           "+ADSLTunnelIP+
-                                "\nDVR Gateway:         "+DVRGatewayIP+
-                                "\n3G Tunnel:              "+ TGTunnelIP+
-                                "\nDVR Mask:              "+ DVRMaskIP+
-                                "\n Terminal No:          "+terminalNoTextField.getText());
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get()== ButtonType.OK){
-                    boolean checkConn=connection.setInfos(
-                            selectedCity,
-                            atmNameTextField.getText(),
-                            subeNumTextField.getText(),
-                            ATMIDTextField.getText(),
-                            selectedSubmask,
-                            subnetIP,
-                            subnetBroadcastIP,
-                            routerIP,
-                            ATMIP,
-                            ADSLTunnelIP,
-                            TGTunnelIP,
-                            DVRMaskIP,
-                            DVRGatewayIP,
-                            terminalNoTextField.getText());
-                    if (checkConn){
-                        alert1.setTitle("Başarılı!");
-                        alert1.setContentText("Başarılı bir şekilde kaydedildi!");
-                        alert1.showAndWait();
-                        reset();;
-                        kaydetButton.setDisable(true);
-                    }else{
-                        alert1.setTitle("Başarısız!");
-                        alert1.setContentText("Bilgileriniz kaydedilemedi!");
-                        alert1.showAndWait();
-                    }
-                }
+                setDatabase();
             }else{
-                alert1.setContentText("Ping ulaşıldı, Kayıt Başarısız!");
-                alert1.showAndWait();
-                resetDoldur();
+                alert.setAlertType(Alert.AlertType.CONFIRMATION);
+                alert.setContentText("Ping'e ulaşıldı, yine de kaydedilsin mi ?");
+                Optional<ButtonType> button = alert.showAndWait();
+                if (button.get() == ButtonType.OK){
+                    setDatabase();
+                }else{
+                    resetDoldur();
+                }
             }
 
+    }
 
+
+    void setDatabase() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("");
+        alert.setHeaderText("LÜTFEN BİLGİLERİ KONTROL EDİNİZ!");
+        alert.setContentText(
+                "İl:                             " + selectedCity +
+                        "\nATM Adı:                 " + atmNameTextField.getText() +
+                        "\nATM ID:                  " + ATMIDTextField.getText() +
+                        "\nŞube Numarası:       " + subeNumTextField.getText() +
+                        "\nSubnet Mask:          " + selectedSubmask +
+                        "\nSubnet IP :             " + subnetIP +
+                        "\nSubnet Broadcast:   " + subnetBroadcastIP +
+                        "\nRouter IP:                " + routerIP +
+                        "\nATM IP:                   " + ATMIP +
+                        "\nADSL Tunnel:           " + ADSLTunnelIP +
+                        "\nDVR Gateway:         " + DVRGatewayIP +
+                        "\n3G Tunnel:              " + TGTunnelIP +
+                        "\nDVR Mask:              " + DVRMaskIP +
+                        "\n Terminal No:          " + terminalNoTextField.getText());
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            boolean checkConn = connection.setInfos(
+                    selectedCity,
+                    atmNameTextField.getText(),
+                    subeNumTextField.getText(),
+                    ATMIDTextField.getText(),
+                    selectedSubmask,
+                    subnetIP,
+                    subnetBroadcastIP,
+                    routerIP,
+                    ATMIP,
+                    ADSLTunnelIP,
+                    TGTunnelIP,
+                    DVRMaskIP,
+                    DVRGatewayIP,
+                    terminalNoTextField.getText());
+            if (checkConn) {
+                alert.setAlertType(Alert.AlertType.INFORMATION);
+                alert.setTitle("Başarılı!");
+                alert.setHeaderText(null);
+                alert.setContentText("Başarılı bir şekilde kaydedildi!");
+                alert.showAndWait();
+                reset();
+                ;
+                kaydetButton.setDisable(true);
+            } else {
+                alert.setAlertType(Alert.AlertType.INFORMATION);
+                alert.setTitle("Başarısız!");
+                alert.setContentText("Bilgileriniz kaydedilemedi!");
+                alert.showAndWait();
+            }
+        }
     }
 
     void IPCalc(){

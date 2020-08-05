@@ -58,7 +58,7 @@ public class DatabaseConnection {
             stmt.execute(sql);
             stmt.execute(sql2);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -215,7 +215,6 @@ public class DatabaseConnection {
 
     public boolean checkConflict(String check,String IP){
         String sql ="select * from database where "+check+"='"+IP+"'";
-        System.out.println(sql);
         try (Connection connection=this.connect();
              Statement pst = connection.createStatement();
              ResultSet rs = pst.executeQuery(sql)){
@@ -325,6 +324,7 @@ public class DatabaseConnection {
 
 
     }
+
 
 
 

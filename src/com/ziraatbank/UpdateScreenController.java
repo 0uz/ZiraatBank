@@ -69,8 +69,6 @@ public class UpdateScreenController {
                             kaydetButton.setDisable(false);
                         }
 
-
-
                 }else{
                     warningLabel.setText("Subnet IP hatalı!");
                     warningLabel.setVisible(true);
@@ -269,7 +267,6 @@ public class UpdateScreenController {
         Parent mainScreen = loader.load();
         Scene mainScreenScene = new Scene(mainScreen);
 
-        com.ziraatbank.MainScreenController controller = loader.getController();
         Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
         window.setScene(mainScreenScene);
         window.show();
@@ -290,7 +287,6 @@ public class UpdateScreenController {
             ,subeNumTextField.getText(), subnetIPTextField.getText(),routerIP.getText(),
                     subnetBroadcastIP.getText(),atmIP.getText(),adslTunnelTextField.getText(),
                     TGTunnelIP.getText(),dvrGatewayTextField.getText(),terminalNoTextField.getText());
-            System.out.println(terminalNoTextField.getText());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
             alert.setContentText("Başarıyla kaydedildi!");
