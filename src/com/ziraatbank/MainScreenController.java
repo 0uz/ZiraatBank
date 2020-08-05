@@ -78,6 +78,7 @@ public class MainScreenController {
     private String selectedSubmask = "";
     private String search="";
     private String key="";
+    private String araSecComboBoxString;
 
 
     public void setATMName(boolean ATMName) {
@@ -142,39 +143,6 @@ public class MainScreenController {
             ipBlockWarningLabel.setVisible(true);
         }
 
-        araSecComboBox.valueProperty().addListener((observableValue, s, t1) -> {
-            ArrayList<String> result= new ArrayList();
-
-            if (t1.equals("ATM ID")){
-                result=connection.getAra("AtmID");
-            }
-            if (t1.equals("ATM Adı")){
-                result=connection.getAra("AtmAdı");
-            }
-            if (t1.equals("Sube Numarası")){
-                result=connection.getAra("SubeNum");
-            }
-            if (t1.equals("Subnet IP")){
-                result=connection.getAra("SubnetIP");
-            }
-            if (t1.equals("Subnet Broadcast")){
-                result=connection.getAra("SubnetBroadcast");
-            }
-            if (t1.equals("ADSL Tunnel")){
-                result=connection.getAra("ADSLTunnel");
-            }
-            if (t1.equals("Terminal No")){
-                result=connection.getAra("TerminalNo");
-            }
-            araSonucComboBox.getItems().clear();
-            for(String s1 : result){
-                if (s1 != null){
-                    araSonucComboBox.getItems().add(s1);
-                }
-            }
-
-
-        } );
         subeAdıTextField.textProperty().addListener((observableValue, s, t1) -> {
             if(t1.length()>=2){
                 warningLabel.setVisible(false);
@@ -266,9 +234,12 @@ public class MainScreenController {
             disableKaydetButton();
         } );
 
-        araSecComboBox.valueProperty().addListener(observable -> {
+        araSecComboBox.valueProperty().addListener((observableValue, s, t1) -> {
+            araSecComboBoxString = t1;
+            araSecComboBoxDoldur();
             araSonucComboBox.setDisable(false);
         });
+
         araSonucComboBox.valueProperty().addListener(observable -> {
             araButton.setDisable(false);
         });
@@ -286,8 +257,38 @@ public class MainScreenController {
         });
 
 
+    }
 
+    void araSecComboBoxDoldur(){
+        ArrayList<String> result= new ArrayList();
 
+        if (araSecComboBoxString.equals("ATM ID")){
+            result=connection.getAra("AtmID");
+        }
+        if (araSecComboBoxString.equals("ATM Adı")){
+            result=connection.getAra("AtmAdı");
+        }
+        if (araSecComboBoxString.equals("Sube Numarası")){
+            result=connection.getAra("SubeNum");
+        }
+        if (araSecComboBoxString.equals("Subnet IP")){
+            result=connection.getAra("SubnetIP");
+        }
+        if (araSecComboBoxString.equals("Subnet Broadcast")){
+            result=connection.getAra("SubnetBroadcast");
+        }
+        if (araSecComboBoxString.equals("ADSL Tunnel")){
+            result=connection.getAra("ADSLTunnel");
+        }
+        if (araSecComboBoxString.equals("Terminal No")){
+            result=connection.getAra("TerminalNo");
+        }
+        araSonucComboBox.getItems().clear();
+        for(String s1 : result){
+            if (s1 != null){
+                araSonucComboBox.getItems().add(s1);
+            }
+        }
     }
 
     void illerDoldur(){
@@ -628,38 +629,39 @@ public class MainScreenController {
         alert.setTitle("");
         alert.setHeaderText("LÜTFEN BİLGİLERİ KONTROL EDİNİZ!");
         alert.setContentText(
-                "İl:                             " + selectedCity +
-                        "\nATM Adı:                 " + atmNameTextField.getText() +
-                        "\nATM ID:                  " + ATMIDTextField.getText() +
-                        "\nŞube Numarası:       " + subeNumTextField.getText() +
-                        "\nSubnet Mask:          " + selectedSubmask +
-                        "\nSubnet IP :             " + subnetIP +
-                        "\nSubnet Broadcast:   " + subnetBroadcastIP +
-                        "\nRouter IP:                " + routerIP +
-                        "\nATM IP:                   " + ATMIP +
-                        "\nADSL Tunnel:           " + ADSLTunnelIP +
-                        "\nDVR Gateway:         " + DVRGatewayIP +
-                        "\n3G Tunnel:              " + TGTunnelIP +
-                        "\nDVR Mask:              " + DVRMaskIP +
-                        "\n Terminal No:          " + terminalNoTextField.getText());
-        boolean checkConn = connection.setDataToDatabase(
-                selectedCity,
-                subeNumTextField.getText(),
-                subeAdıTextField.getText(),
-                atmNameTextField.getText(),
-                subnetIP,
-                subnetBroadcastIP,
-                selectedSubmask,
-                routerIP,
-                ATMIP,
-                ADSLTunnelIP,
-                TGTunnelIP,
-                ATMIDTextField.getText(),
-                DVRMaskIP,
-                DVRGatewayIP,
-                terminalNoTextField.getText());
+                                "İl:                               " + selectedCity +
+                                "\nŞube Numarası:         " + subeNumTextField.getText() +
+                                "\nATM Adı:                    " + atmNameTextField.getText() +
+                                "\nŞube Adı:                   " + subeAdıTextField.getText() +
+                                "\nSubnet IP :                " + subnetIP +
+                                "\nSubnet Broadcast:     " + subnetBroadcastIP +
+                                "\nSubnet Mask:             " + selectedSubmask +
+                                "\nRouter IP:                   " + routerIP +
+                                "\nATM IP:                      " + ATMIP +
+                                "\nADSL Tunnel:             " + ADSLTunnelIP +
+                                "\n3G Tunnel:                 " + TGTunnelIP +
+                                "\nDVR Gateway:            " + DVRGatewayIP +
+                                "\nDVR Mask:                 " + DVRMaskIP +
+                                "\nATM ID:                      " + ATMIDTextField.getText() +
+                                "\nTerminal No:              " + terminalNoTextField.getText());
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
+            boolean checkConn = connection.setDataToDatabase(
+                    selectedCity,
+                    subeNumTextField.getText(),
+                    subeAdıTextField.getText(),
+                    atmNameTextField.getText(),
+                    subnetIP,
+                    subnetBroadcastIP,
+                    selectedSubmask,
+                    routerIP,
+                    ATMIP,
+                    ADSLTunnelIP,
+                    TGTunnelIP,
+                    DVRGatewayIP,
+                    DVRMaskIP,
+                    ATMIDTextField.getText(),
+                    terminalNoTextField.getText());
             if (checkConn) {
                 alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setTitle("Başarılı!");
@@ -667,8 +669,11 @@ public class MainScreenController {
                 alert.setContentText("Başarılı bir şekilde kaydedildi!");
                 alert.showAndWait();
                 reset();
-                ;
                 kaydetButton.setDisable(true);
+                if(araSecComboBoxString!=null){
+                    araSecComboBoxDoldur();
+                }
+
             } else {
                 alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setTitle("Başarısız!");
@@ -842,7 +847,7 @@ public class MainScreenController {
         terminalNoTextField.setText("");
         terminalNoTextField.setStyle("-fx-border-color: transparent");
         subeAdıTextField.setText("");
-        terminalNoTextField.setStyle("-fx-border-color: transparent");
+        subeAdıTextField.setStyle("-fx-border-color: transparent");
         subnetIPLabel.setText("");
         subnetBroadcast.setText("");
         router.setText("");
@@ -851,6 +856,7 @@ public class MainScreenController {
         TGTunnel.setText("");
         DVRGateway.setText("");
         DVRMask.setText("");
+        warningLabel.setVisible(false);
 
 
     }

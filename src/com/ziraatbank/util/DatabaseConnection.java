@@ -191,7 +191,7 @@ public class DatabaseConnection {
     }
 
     public ArrayList<String> getData(String searchName, String key){
-        String sql ="select AtmAdı,AtmID,SubeNum,SubnetIP,RouterIP," +
+        String sql ="select Sehir,AtmAdı,AtmID,SubeNum,SubnetIP,RouterIP," +
                 "SubnetBroadcast,AtmIP,ADSLTunnel,TGTunnel,DVRGateway," +
                 "DVRMask, SubnetMask, TerminalNo, SubeAdı from database where "+searchName+"='"+key+"'";
         try (Connection connection=this.connect();
@@ -199,6 +199,7 @@ public class DatabaseConnection {
              ResultSet rs = pst.executeQuery(sql)){
             ArrayList<String> result= new ArrayList<>();
             while (rs.next()){
+                result.add(rs.getString("Sehir"));
                 result.add(rs.getString("AtmAdı"));
                 result.add(rs.getString("AtmID"));
                 result.add(rs.getString("SubeNum"));

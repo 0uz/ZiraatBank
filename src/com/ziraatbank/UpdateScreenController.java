@@ -34,6 +34,8 @@ public class UpdateScreenController {
     public Label warningLabel;
     public Label warningLabel1;
     public Label warningLabel2;
+    public Label frameLabel;
+
     public ComboBox<String> subnetMaskComboBox;
     public Button iptalButton;
     private final String subnet252 = "255.255.255.252";
@@ -239,31 +241,32 @@ public class UpdateScreenController {
 
     public void setDataToFields(String searchName, String key){
         ArrayList<String> list = connection.getData(searchName,key);
-        atmAdiTextField.setText(list.get(0));
-        atmIDTextField.setText(list.get(1));
-        subeNumTextField.setText(list.get(2));
-        subnetIPTextField.setText(list.get(3));
-        routerIP.setText(list.get(4));
-        subnetBroadcastIP.setText(list.get(5));
-        atmIP.setText(list.get(6));
-        if (list.get(7)==null){
+        frameLabel.setText("Ziraat Bankası App / " +list.get(0));
+        atmAdiTextField.setText(list.get(1));
+        atmIDTextField.setText(list.get(2));
+        subeNumTextField.setText(list.get(3));
+        subnetIPTextField.setText(list.get(4));
+        routerIP.setText(list.get(5));
+        subnetBroadcastIP.setText(list.get(6));
+        atmIP.setText(list.get(7));
+        if (list.get(8)==null){
             adslTunnelTextField.setDisable(true);
         }else{
             adslTunnelTextField.setText(list.get(7));
         }
-        if (list.get(8)==null){
+        if (list.get(9)==null){
             TGTunnelIP.setDisable(true);
         }else{
-            TGTunnelIP.setText(list.get(8));
+            TGTunnelIP.setText(list.get(9));
         }
-        dvrGatewayTextField.setText(list.get(9));
-        if (list.get(11).equals(subnet248)){
+        dvrGatewayTextField.setText(list.get(10));
+        if (list.get(12).equals(subnet248)){
             subnetMaskComboBox.getSelectionModel().select(subnet248);
         }else{
             subnetMaskComboBox.getSelectionModel().select(subnet252);
         }
-        terminalNoTextField.setText(list.get(12));
-        subeAdiTextField.setText(list.get(13));
+        terminalNoTextField.setText(list.get(13));
+        subeAdiTextField.setText(list.get(14));
 
     }
 

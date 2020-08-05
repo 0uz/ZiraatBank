@@ -17,7 +17,7 @@
    <top>
       <HBox alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="600.0" style="-fx-background-color: #e10514;" BorderPane.alignment="CENTER">
          <children>
-            <Label prefHeight="22.0" prefWidth="698.0" text="Ziraat Bank App" textFill="WHITE">
+            <Label fx:id="frameLabel" prefHeight="22.0" prefWidth="698.0" text="Ziraat Bank App" textFill="WHITE">
                <padding>
                   <Insets top="5.0" />
                </padding>
