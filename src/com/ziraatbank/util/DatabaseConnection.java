@@ -94,8 +94,8 @@ public class DatabaseConnection {
     public boolean setDataToDatabase(String Sehir, String subeNum, String subeAdi,
                                      String atmAdi, String subnetIP, String subnetBroadcast,
                                      String subnetMask, String routerIP, String atmIP,
-                                     String ADSLTunnel, String TGTunnel, String atmID,
-                                     String DVRMask, String DVRGateway, String terminalNo){
+                                     String ADSLTunnel, String TGTunnel, String DVRGateway,
+                                     String DVRMask,String atmID, String terminalNo){
 
             String sql ="insert into database (Sehir, AtmAdı, SubeNum, AtmID, SubnetMask, " +
                         "SubnetIP, SubnetBroadcast, RouterIP, AtmIP, ADSLTunnel, TGTunnel, DVRMask, DVRGateway, TerminalNo, SubeAdı) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -190,7 +190,7 @@ public class DatabaseConnection {
         }
     }
 
-    public ArrayList<String> getInfos(String searchName, String key){
+    public ArrayList<String> getData(String searchName, String key){
         String sql ="select AtmAdı,AtmID,SubeNum,SubnetIP,RouterIP," +
                 "SubnetBroadcast,AtmIP,ADSLTunnel,TGTunnel,DVRGateway," +
                 "DVRMask, SubnetMask, TerminalNo, SubeAdı from database where "+searchName+"='"+key+"'";

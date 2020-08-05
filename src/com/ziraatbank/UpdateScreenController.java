@@ -237,8 +237,8 @@ public class UpdateScreenController {
         stage.setIconified(true);
     }
 
-    public void setInfosToFields(String searchName, String key){
-        ArrayList<String> list = connection.getInfos(searchName,key);
+    public void setDataToFields(String searchName, String key){
+        ArrayList<String> list = connection.getData(searchName,key);
         atmAdiTextField.setText(list.get(0));
         atmIDTextField.setText(list.get(1));
         subeNumTextField.setText(list.get(2));

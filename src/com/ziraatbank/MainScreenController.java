@@ -165,8 +165,11 @@ public class MainScreenController {
             }
             araSonucComboBox.getItems().clear();
             for(String s1 : result){
-                araSonucComboBox.getItems().add(s1);
+                if (s1 != null){
+                    araSonucComboBox.getItems().add(s1);
+                }
             }
+
 
         } );
         subeAdıTextField.textProperty().addListener((observableValue, s, t1) -> {
@@ -490,7 +493,7 @@ public class MainScreenController {
 
             controller.setSearch(araSecComboBox.getSelectionModel().getSelectedItem(), araSonucComboBox.getSelectionModel().getSelectedItem());
             setSearch(araSecComboBox.getSelectionModel().getSelectedItem(), araSonucComboBox.getSelectionModel().getSelectedItem());
-            controller.setInfosToFields(search, key);
+            controller.setDataToFields(search, key);
 
             Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             window.setScene(updateScreenScene);
