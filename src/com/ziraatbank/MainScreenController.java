@@ -2,6 +2,8 @@ package com.ziraatbank;
 
 import com.ziraatbank.util.AutoCompleteComboBoxListener;
 import com.ziraatbank.util.DatabaseConnection;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.*;
@@ -355,6 +358,7 @@ public class MainScreenController {
     }
 
     public void getExcelToDatabase(File file){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         try {
             FileInputStream inputStream = new FileInputStream(file);
             XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
@@ -377,9 +381,16 @@ public class MainScreenController {
                             arr[10],arr[11],arr[12],arr[13],arr[14]);
                 }
             }
-
             inputStream.close();
+            alert.setHeaderText(null);
+            alert.setTitle("Başarılı");
+            alert.setContentText("Database'e aktarıldı!");
+            alert.showAndWait();
         } catch (IOException e) {
+            alert.setHeaderText(null);
+            alert.setTitle("Başarılı");
+            alert.setContentText("Database'e aktarıldı!");
+            alert.showAndWait();
             e.printStackTrace();
         }
 
@@ -525,29 +536,41 @@ public class MainScreenController {
         IPCalc();
         setInfos();
     }
-
+    void resetStyle(Label label){
+        Timeline time = new Timeline(new KeyFrame(Duration.seconds(7),event ->{
+            label.setStyle("-fx-border-color: transparent");
+        }));
+        time.play();
+    }
     @FXML
     void pingButtonAction(){
             if(sendPingComboBox.getValue().equals("Router IP")){
                 sendPing(router.getText(),router);
+                resetStyle(router);
             }
             if(sendPingComboBox.getValue().equals("DVR Gateway")){
                 sendPing(DVRGateway.getText(),DVRGateway);
+                resetStyle(DVRGateway);
             }
             if(sendPingComboBox.getValue().equals("ATM IP")){
                 sendPing(ATM.getText(),ATM);
+                resetStyle(ATM);
             }
             if(sendPingComboBox.getValue().equals("ADSL Tunnel")){
                 sendPing(ADSLTunnel.getText(),ADSLTunnel);
+                resetStyle(ADSLTunnel);
             }
             if(sendPingComboBox.getValue().equals("3G Tunnel")){
                 sendPing(TGTunnel.getText(),TGTunnel);
+                resetStyle(TGTunnel);
             }
             if(sendPingComboBox.getValue().equals("Subnet IP")){
                 sendPing(subnetIPLabel.getText(),subnetIPLabel);
+                resetStyle(subnetIPLabel);
             }
             if(sendPingComboBox.getValue().equals("Subnet Broadcast")){
                 sendPing(subnetBroadcast.getText(),subnetBroadcast);
+                resetStyle(subnetBroadcast);
             }
 
     }
