@@ -246,8 +246,16 @@ public class UpdateScreenController {
         routerIP.setText(list.get(4));
         subnetBroadcastIP.setText(list.get(5));
         atmIP.setText(list.get(6));
-        adslTunnelTextField.setText(list.get(7));
-        TGTunnelIP.setText(list.get(8));
+        if (list.get(7)==null){
+            adslTunnelTextField.setDisable(true);
+        }else{
+            adslTunnelTextField.setText(list.get(7));
+        }
+        if (list.get(8)==null){
+            TGTunnelIP.setDisable(true);
+        }else{
+            TGTunnelIP.setText(list.get(8));
+        }
         dvrGatewayTextField.setText(list.get(9));
         if (list.get(11).equals(subnet248)){
             subnetMaskComboBox.getSelectionModel().select(subnet248);
@@ -285,10 +293,18 @@ public class UpdateScreenController {
 
     @FXML
     void kaydetButton (){
-            connection.updateInfos(search,key, atmAdiTextField.getText(),atmIDTextField.getText()
-            ,subeNumTextField.getText(), subnetIPTextField.getText(),routerIP.getText(),
+        if (adslTunnelTextField.getText().equals("")&&TGTunnelIP.getText().equals("Bulunamadı")){
+            connection.updateData(search,key, atmAdiTextField.getText(),atmIDTextField.getText()
+                    ,subeNumTextField.getText(), subnetIPTextField.getText(),routerIP.getText(),
+                    subnetBroadcastIP.getText(),atmIP.getText(),null,
+                    null,dvrGatewayTextField.getText(),terminalNoTextField.getText(),subeAdiTextField.getText());
+        }else{
+            connection.updateData(search,key, atmAdiTextField.getText(),atmIDTextField.getText()
+                    ,subeNumTextField.getText(), subnetIPTextField.getText(),routerIP.getText(),
                     subnetBroadcastIP.getText(),atmIP.getText(),adslTunnelTextField.getText(),
                     TGTunnelIP.getText(),dvrGatewayTextField.getText(),terminalNoTextField.getText(),subeAdiTextField.getText());
+        }
+
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
             alert.setContentText("Başarıyla kaydedildi!");

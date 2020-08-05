@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="database" uuid="973f868a-07e7-43b0-8f8a-ecf96700eaa1">
+    <data-source source="LOCAL" name="database.db" uuid="65ec90ad-9705-4d0f-8f6e-123bac98c632">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\Seda\Desktop\ZiraatBankApp\database.db</jdbc-url>
-      <libraries>
-        <library>
-          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.31.1/license.txt</url>
-        </library>
-        <library>
-          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.31.1/sqlite-jdbc-3.31.1.jar</url>
-        </library>
-      </libraries>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/database.db</jdbc-url>
     </data-source>
   </component>
 </project>

@@ -21,15 +21,9 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTableColumn;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTableColumns;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTableStyleInfo;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,7 +60,6 @@ public class MainScreenController {
     public ComboBox<String> araSonucComboBox;
     public ComboBox<String> sendPingComboBox;
     public ImageView ZBimageView;
-    public FileChooser fileChooser;
 
     private final String subnet252 = "255.255.255.252";
     private final String subnet248 = "255.255.255.248";
@@ -309,7 +302,7 @@ public class MainScreenController {
 
     @FXML
     void ipBlockAktarButton(){
-        fileChooser = new FileChooser();
+        FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("IP Block Seçiniz!");
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("EXCEL File (*.XLSX)","*.XLSX");
         fileChooser.getExtensionFilters().add(extensionFilter);
@@ -351,8 +344,53 @@ public class MainScreenController {
                 }
             }
 
+            file.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+    }
+
+    public void getExcelToDatabase(File file){
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+            XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+
+            for (int rowIndex = 1; rowIndex<=sheet.getLastRowNum();rowIndex++){
+                Row row = sheet.getRow(rowIndex);
+                if (row != null){
+                    String[] arr = new String[15];
+                    for (int i=0;i<15;i++){
+                        Cell cell = row.getCell(i);
+                        if (cell == null){
+                            arr[i]=null;
+                        }else{
+                            arr[i]=cell.getStringCellValue();
+                        }
+                    }
+                    connection.setDataToDatabase(arr[0],arr[1],arr[2],arr[3],arr[4],
+                            arr[5],arr[6],arr[7],arr[8],arr[9],
+                            arr[10],arr[11],arr[12],arr[13],arr[14]);
+                }
+            }
+
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @FXML
+    void excelToDatabaseButtonAction(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Konum Seçiniz!");
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("EXCEL File (*.XLSX)","*.XLSX");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+        File file = fileChooser.showOpenDialog(null);
+        if (file!=null){
+            getExcelToDatabase(file);
         }
 
     }
@@ -390,7 +428,11 @@ public class MainScreenController {
             Object[] objArr = map.get(r);
             for(int c = 0; c < objArr.length; c++) {
                 XSSFCell cell = row.createCell(c);
+                if (objArr[c] == null){
+                    cell.setCellValue("");
+                }else{
                     cell.setCellValue(objArr[c].toString());
+                }
             }
         }
 
@@ -574,24 +616,24 @@ public class MainScreenController {
                         "\n3G Tunnel:              " + TGTunnelIP +
                         "\nDVR Mask:              " + DVRMaskIP +
                         "\n Terminal No:          " + terminalNoTextField.getText());
+        boolean checkConn = connection.setDataToDatabase(
+                selectedCity,
+                subeNumTextField.getText(),
+                subeAdıTextField.getText(),
+                atmNameTextField.getText(),
+                subnetIP,
+                subnetBroadcastIP,
+                selectedSubmask,
+                routerIP,
+                ATMIP,
+                ADSLTunnelIP,
+                TGTunnelIP,
+                ATMIDTextField.getText(),
+                DVRMaskIP,
+                DVRGatewayIP,
+                terminalNoTextField.getText());
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            boolean checkConn = connection.setInfos(
-                    selectedCity,
-                    atmNameTextField.getText(),
-                    subeNumTextField.getText(),
-                    ATMIDTextField.getText(),
-                    selectedSubmask,
-                    subnetIP,
-                    subnetBroadcastIP,
-                    routerIP,
-                    ATMIP,
-                    ADSLTunnelIP,
-                    TGTunnelIP,
-                    DVRMaskIP,
-                    DVRGatewayIP,
-                    terminalNoTextField.getText(),
-                    subeAdıTextField.getText());
             if (checkConn) {
                 alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setTitle("Başarılı!");

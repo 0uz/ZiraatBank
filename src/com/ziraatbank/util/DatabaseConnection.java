@@ -91,11 +91,16 @@ public class DatabaseConnection {
 
     }
 
-    public boolean setInfos(String Sehir,String atmAdi, String subeNum, String atmID, String subnetMask, String subnetIP, String subnetBroadcast,
-                            String routerIP, String atmIP, String ADSLTunnel, String TGTunnel, String DVRMask, String DVRGateway, String terminalNo,String subeAdi){
+    public boolean setDataToDatabase(String Sehir, String subeNum, String subeAdi,
+                                     String atmAdi, String subnetIP, String subnetBroadcast,
+                                     String subnetMask, String routerIP, String atmIP,
+                                     String ADSLTunnel, String TGTunnel, String atmID,
+                                     String DVRMask, String DVRGateway, String terminalNo){
+
             String sql ="insert into database (Sehir, AtmAdı, SubeNum, AtmID, SubnetMask, " +
                         "SubnetIP, SubnetBroadcast, RouterIP, AtmIP, ADSLTunnel, TGTunnel, DVRMask, DVRGateway, TerminalNo, SubeAdı) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-                    try (Connection connection=this.connect();
+
+            try (Connection connection=this.connect();
                     PreparedStatement pst = connection.prepareStatement(sql)){
                         pst.setString(1,Sehir);
                         pst.setString(2,atmAdi);
@@ -119,6 +124,7 @@ public class DatabaseConnection {
                         return false;
                     }
     }
+
 
     public boolean searchSubnetIP(String IP){
         String sql ="select * from database where SubnetIP ='"+IP+"'";
@@ -231,11 +237,11 @@ public class DatabaseConnection {
         }
     }
 
-    public void updateInfos(String search, String key, String atmAdi, String atmID,
-                            String subeNum, String subnetIP, String routerIP,
-                            String subnetBroadcastIp, String atmIP,
-                            String adslTunelIP, String TGTunnelI,
-                            String DVRGateway , String terminalNo, String subeAdi){
+    public void updateData(String search, String key, String atmAdi, String atmID,
+                           String subeNum, String subnetIP, String routerIP,
+                           String subnetBroadcastIp, String atmIP,
+                           String adslTunelIP, String TGTunnelI,
+                           String DVRGateway , String terminalNo, String subeAdi){
 
         String sql = "update database set " +
                 "AtmAdı = ? ," +
@@ -248,7 +254,7 @@ public class DatabaseConnection {
                 "ADSLTunnel = ? ," +
                 "TGTunnel = ? ," +
                 "DVRGateway = ? ," +
-                "TerminalNo = ? " +
+                "TerminalNo = ? ," +
                 "SubeAdı = ? " +
                 "where "+search+"= ?;";
 
