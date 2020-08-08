@@ -76,9 +76,6 @@
       <element id="file-copy" path="$PROJECT_DIR$/../javafx-sdk-14.0.1/bin/prism_sw.dll" />
       <element id="file-copy" path="$PROJECT_DIR$/../javafx-sdk-14.0.1/bin/ucrtbase.dll" />
       <element id="file-copy" path="$PROJECT_DIR$/../javafx-sdk-14.0.1/bin/vcruntime140.dll" />
-      <element id="library" level="project" name="excelLib" />
-      <element id="library" level="project" name="lib" />
-      <element id="library" level="project" name="sqlite-jdbc-3.32.3.2" />
     </root>
   </artifact>
 </component>

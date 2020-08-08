@@ -142,6 +142,23 @@ public class DatabaseConnection {
         }
     }
 
+    public String searchSubnetMask(String IP){
+
+        String sql ="select * from database where SubnetIP ='"+IP+"'";
+        try (Connection connection=this.connect();
+             Statement pst = connection.createStatement();
+             ResultSet rs = pst.executeQuery(sql)){
+            if (rs.next()){
+                String subnetIP = rs.getString("SubnetMask");
+                return subnetIP;
+            }
+            return null;
+        }catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public boolean searchDVRGateway(String IP){
         String sql ="select * from database where DVRGateway ='"+IP+"'";
         try (Connection connection=this.connect();

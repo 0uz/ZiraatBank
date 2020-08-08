@@ -124,7 +124,6 @@ public class MainScreenController {
 
         araSecComboBox.getItems().add("ATM ID");
         araSecComboBox.getItems().add("ATM Adı");
-        araSecComboBox.getItems().add("Sube Numarası");
         araSecComboBox.getItems().add("Subnet IP");
         araSecComboBox.getItems().add("ADSL Tunnel");
         araSecComboBox.getItems().add("Terminal No");
@@ -227,11 +226,14 @@ public class MainScreenController {
             disableKaydetButton();
         });
 
-        subnetMaskComboBox.valueProperty().addListener(observable -> {
-            IPHesapla();
-            sendPingComboBox.setDisable(false);
-            setSubnetMask(true);
-            disableKaydetButton();
+        subnetMaskComboBox.valueProperty().addListener(observableValue -> {
+            if (!(iller.getValue().length()<=1)){
+                IPHesapla();
+                sendPingComboBox.setDisable(false);
+                setSubnetMask(true);
+                disableKaydetButton();
+            }
+
         } );
 
         araSecComboBox.valueProperty().addListener((observableValue, s, t1) -> {
@@ -250,8 +252,7 @@ public class MainScreenController {
 
         iller.valueProperty().addListener(observable -> {
             subnetMaskComboBox.setDisable(false);
-
-            if (subnetMaskComboBox.getSelectionModel().getSelectedItem()!=null){
+            if (!(iller.getValue().length()<=1)&&selectedSubmask.length()>1){
                 IPHesapla();
             }
         });
@@ -493,6 +494,8 @@ public class MainScreenController {
     private double xOffset = 0;
     private double yOffset = 0;
 
+
+
     @FXML
     void araButtonAction(ActionEvent actionEvent) throws IOException {
 
@@ -537,6 +540,8 @@ public class MainScreenController {
         IPCalc();
         setInfos();
     }
+
+
     void resetStyle(Label label){
         Timeline time = new Timeline(new KeyFrame(Duration.seconds(7),event ->{
             label.setStyle("-fx-border-color: transparent");
@@ -685,12 +690,12 @@ public class MainScreenController {
 
     void IPCalc(){
         if(selectedSubmask.equals(subnet248)){
-            subnetBroadcastIP=parseIP(subnetIP,8);
+            subnetBroadcastIP=parseIP(subnetIP,7);
             routerIP=parseIP(subnetIP,1);
             ATMIP=parseIP(subnetIP,2);
         }else{
+            subnetBroadcastIP=parseIP(subnetIP,3);
             routerIP=parseIP(subnetIP,1);
-            subnetBroadcastIP=parseIP(subnetIP,4);
             ATMIP=parseIP(subnetIP,2);
         }
     }
@@ -764,6 +769,7 @@ public class MainScreenController {
     }
 
     void ADSLTunnelCalc(){
+
         String firstTreePart = ADSLTunnelIP.substring(0, ADSLTunnelIP.lastIndexOf("."));
         String lastPart = ADSLTunnelIP.substring(ADSLTunnelIP.lastIndexOf(".")+1);
         int parsedLast = Integer.parseInt(lastPart);
@@ -778,6 +784,7 @@ public class MainScreenController {
     }
 
     static String TGTunnelCalc(String ADSLTunnelIP){
+
         int firstDotIndex=ADSLTunnelIP.indexOf(".");
         int secondDotIndex=ADSLTunnelIP.indexOf(".",firstDotIndex+1);
         String firstPart=ADSLTunnelIP.substring(0,firstDotIndex+1);
@@ -785,33 +792,23 @@ public class MainScreenController {
         String secondPart=ADSLTunnelIP.substring(firstDotIndex+1,secondDotIndex);
         int parseSecondPart = Integer.parseInt(secondPart)-3;
         return firstPart+parseSecondPart+thirdPart;
+
     }
 
-    String subnetIPCalc(String IP){
+    String subnetIPCalc(String IP, int add){
         String firstTreePart = IP.substring(0, IP.lastIndexOf("."));
         String lastPart = IP.substring(IP.lastIndexOf(".")+1);
 
-        if (selectedSubmask.equals(subnet248)){
             int parsedLast = Integer.parseInt(lastPart);
             if (parsedLast<=241){
-                return firstTreePart+"."+(parsedLast+8);
+                return firstTreePart+"."+(parsedLast+add);
             }else{
                 String firstTwo = firstTreePart.substring(0,firstTreePart.lastIndexOf("."));
                 String lastTwo = firstTreePart.substring(firstTreePart.lastIndexOf(".")+1);
-                int parsedLastTwo = Integer.parseInt(lastTwo)+1;
+                int parsedLastTwo = Integer.parseInt(lastTwo)-1;
                 return firstTwo+"."+parsedLastTwo+".0";
             }
-        }else{
-            int parsedLast = Integer.parseInt(lastPart);
-            if (parsedLast<=241){
-                return firstTreePart+"."+(parsedLast+4);
-            }else{
-                String firstTwo = firstTreePart.substring(0,firstTreePart.lastIndexOf("."));
-                String lastTwo = firstTreePart.substring(firstTreePart.lastIndexOf(".")+1);
-                int parsedLastTwo = Integer.parseInt(lastTwo)+1;
-                return firstTwo+"."+parsedLastTwo+".0";
-            }
-        }
+
 
     }
 
@@ -825,11 +822,25 @@ public class MainScreenController {
 
     void searchEmptyIP(){
         String searchSubnetIP = connection.getIPBlock(selectedCity);
-        while (connection.searchSubnetIP(searchSubnetIP)){
-           searchSubnetIP = subnetIPCalc(searchSubnetIP);
+        if (selectedSubmask.equals(subnet248)){
+            while (connection.searchSubnetIP(searchSubnetIP)){
+                searchSubnetIP = subnetIPCalc(searchSubnetIP,8);
+            }
+            subnetIP= searchSubnetIP;
+        }else{
+            while (connection.searchSubnetIP(searchSubnetIP)){
+                if (connection.searchSubnetMask(searchSubnetIP).equals(subnet252)&&!connection.searchSubnetIP(subnetIPCalc(searchSubnetIP,4))){
+                    searchSubnetIP = subnetIPCalc(searchSubnetIP,4);
+                }else{
+                    searchSubnetIP = subnetIPCalc(searchSubnetIP,8);
+                }
+            }
+            subnetIP= searchSubnetIP;
         }
-        subnetIP= searchSubnetIP;
+
     }
+
+
 
     void searchEmptyDVRGateway(){
         while (connection.searchDVRGateway(DVRGatewayIP)){
