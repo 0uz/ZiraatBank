@@ -242,6 +242,7 @@ public class MainScreenController {
             araSonucComboBox.setDisable(false);
         });
 
+
         araSonucComboBox.valueProperty().addListener(observable -> {
             araButton.setDisable(false);
         });
@@ -667,8 +668,8 @@ public class MainScreenController {
                     DVRMaskIP,
                     ATMIDTextField.getText(),
                     terminalNoTextField.getText());
+            alert.setAlertType(Alert.AlertType.INFORMATION);
             if (checkConn) {
-                alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setTitle("Başarılı!");
                 alert.setHeaderText(null);
                 alert.setContentText("Başarılı bir şekilde kaydedildi!");
@@ -680,7 +681,6 @@ public class MainScreenController {
                 }
 
             } else {
-                alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setTitle("Başarısız!");
                 alert.setContentText("Bilgileriniz kaydedilemedi!");
                 alert.showAndWait();
